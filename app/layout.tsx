@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Por",
+  title: "Shafi Shoukath",
   description: "A Next.js application",
 };
 

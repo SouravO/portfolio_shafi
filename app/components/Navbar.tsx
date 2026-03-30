@@ -4,7 +4,7 @@ export default function Navbar() {
   return (
     <nav className="flex items-center justify-between px-16 py-4 bg-white dark:bg-black border-b border-zinc-200 dark:border-zinc-800">
       <Link href="/" className="text-xl font-semibold text-black dark:text-zinc-50">
-        Shafi
+        Shafi Shoukath
       </Link>
       <div className="flex gap-6">
         <Link
