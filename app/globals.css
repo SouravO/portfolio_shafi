@@ -1,5 +1,23 @@
 @import "tailwindcss";
 
+@keyframes scrolling-data {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+.animate-scrolling-data {
+  animation: scrolling-data 20s linear infinite;
+}
+
+@keyframes loading-status {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-loading-status {
+  animation: loading-status 2s ease-in-out infinite;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
