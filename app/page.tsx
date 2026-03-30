@@ -1,155 +1,226 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
+import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
 
-export default function Home() {
+export default function GalleryCutHome() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, { 
+    stiffness: 100, 
+    damping: 30, 
+    restDelta: 0.001 
+  });
+
+  // ANIMATIONS
+  const leftPanelX = useTransform(smoothProgress, [0, 0.25], ["0%", "-100%"]);
+  const rightPanelX = useTransform(smoothProgress, [0, 0.25], ["0%", "100%"]);
+  const textOpacity = useTransform(smoothProgress, [0.05, 0.2], [1, 0]);
+  const textScale = useTransform(smoothProgress, [0, 0.25], [1, 1.1]);
+  const imageScale = useTransform(smoothProgress, [0.2, 0.6], [0.85, 1.15]);
+  const imageBlur = useTransform(smoothProgress, [0.5, 0.8], ["blur(0px)", "blur(40px)"]);
+  const scrollLineY = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
+
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#080808] text-white antialiased selection:bg-white selection:text-black">
-      {/* 1. CINEMATIC BACKGROUND */}
-      <div className="absolute inset-0 z-0">
-        {/* Subtle Grain Texture */}
-        <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] pointer-events-none"></div>
-        
-        {/* Deep "Aura" Glows */}
-        <div className="absolute top-[-20%] left-[-10%] h-[70%] w-[70%] rounded-full bg-blue-500/5 blur-[120px]"></div>
-        <div className="absolute bottom-[-20%] right-[-10%] h-[70%] w-[70%] rounded-full bg-indigo-500/5 blur-[120px]"></div>
-        
-        {/* Vertical Data Stream (Scrolling Hex) */}
-        <div className="absolute left-6 top-0 bottom-0 w-[1px] opacity-10 overflow-hidden pointer-events-none hidden lg:block">
-          <div className="animate-scrolling-data flex flex-col gap-4 text-[8px] font-mono text-blue-500 py-4">
-            {Array.from({ length: 20 }).map((_, i) => (
-              <span key={i} className="[writing-mode:vertical-rl] rotate-180">0x{Math.random().toString(16).slice(2, 8).toUpperCase()}</span>
-            ))}
-          </div>
-        </div>
-        <div className="absolute right-6 top-0 bottom-0 w-[1px] opacity-10 overflow-hidden pointer-events-none hidden lg:block">
-          <div className="animate-scrolling-data flex flex-col gap-4 text-[8px] font-mono text-indigo-500 py-4">
-            {Array.from({ length: 20 }).map((_, i) => (
-              <span key={i} className="[writing-mode:vertical-rl] rotate-180">0x{Math.random().toString(16).slice(2, 8).toUpperCase()}</span>
-            ))}
-          </div>
-        </div>
+    <main ref={containerRef} className="relative h-[500vh] bg-[#F9F9F9] overflow-x-hidden selection:bg-[#2C518A] selection:text-white">
+      
+      {/* --- INFRASTRUCTURE: THE GLOBAL GRID --- */}
+      <div className="fixed inset-0 z-[1] pointer-events-none opacity-[0.04]" 
+           style={{ backgroundImage: `linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)`, backgroundSize: '40px 40px' }} />
+      
+      {/* --- INFRASTRUCTURE: SCANNER LINE --- */}
+      <motion.div 
+        style={{ top: scrollLineY }}
+        className="fixed left-0 w-full h-[1px] bg-[#D4AF37] z-[50] pointer-events-none flex items-center justify-end px-4"
+      >
+        <span className="text-[8px] font-black text-[#D4AF37] uppercase tracking-[0.5em] -translate-y-2">Scanning_Core_v2.06</span>
+      </motion.div>
 
-        {/* Technical Grid (Ultra-faint) */}
-        <div className="absolute inset-0 opacity-[0.02] bg-[size:40px_40px] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)]"></div>
+      {/* --- LAYER 1: THE FIXED HERO --- */}
+      <section className="fixed top-0 left-0 w-full h-screen z-0 bg-white overflow-hidden">
+        <motion.div 
+          style={{ scale: imageScale, filter: imageBlur }}
+          className="relative h-full w-full flex items-center justify-center p-20"
+        >
+          <div className="relative h-full w-full max-w-4xl grayscale contrast-[1.1] transition-all duration-700">
+            <Image
+              src="/shafi.png" 
+              alt="Shafi Shoukath"
+              fill
+              className="object-contain object-bottom"
+              priority
+            />
+            {/* Liquid Light Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-white/40 to-transparent pointer-events-none" />
+          </div>
+        </motion.div>
+
+        {/* Dynamic Physical Depth Orbs */}
+        <motion.div 
+          animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.3, 0.2] }}
+          transition={{ duration: 10, repeat: Infinity }}
+          className="absolute top-[15%] right-[10%] h-96 w-96 rounded-full bg-[#D4AF37] blur-[140px] pointer-events-none"
+        />
+      </section>
+
+      {/* --- LAYER 2: SPLITTING PANELS & UI HUD --- */}
+      <div className="fixed top-0 left-0 w-full h-screen z-20 flex pointer-events-none">
+        <motion.div style={{ x: leftPanelX }} className="relative h-full w-1/2 bg-white border-r border-zinc-100 shadow-[20px_0_100px_rgba(0,0,0,0.02)]">
+            {/* Top-Left HUD */}
+            <div className="absolute top-10 left-10 flex flex-col gap-1 opacity-40">
+                <span className="text-[8px] font-black text-black tracking-widest uppercase">LAT: 12.9716° N</span>
+                <span className="text-[8px] font-black text-black tracking-widest uppercase">LNG: 77.5946° E</span>
+                <div className="w-8 h-[2px] bg-[#D4AF37] mt-2" />
+            </div>
+        </motion.div>
+
+        <motion.div style={{ x: rightPanelX }} className="relative h-full w-1/2 bg-white border-l border-zinc-100 shadow-[-20px_0_100px_rgba(0,0,0,0.02)]">
+            {/* Bottom-Right HUD */}
+            <div className="absolute bottom-10 right-10 flex flex-col items-end gap-2 opacity-40">
+                <span className="text-[8px] font-black text-[#2C518A] tracking-[0.3em] uppercase italic">System_Auth: Admin_X</span>
+                <div className="flex gap-1">
+                    {[1,2,3,4,5].map(i => <div key={i} className="w-1 h-3 bg-zinc-200" />)}
+                </div>
+            </div>
+        </motion.div>
+        
+        {/* CENTER TYPOGRAPHY */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <motion.div style={{ opacity: textOpacity, scale: textScale }} className="flex flex-col items-center">
+            <h1 className="text-[12vw] font-thin uppercase text-black leading-[0.7] tracking-[-0.05em] mb-4">
+              Shafi
+            </h1>
+            <div className="flex items-center gap-6 w-full px-12">
+                <div className="h-[1px] flex-1 bg-zinc-200" />
+                <span className="text-[10px] font-black tracking-[1.2em] text-[#D4AF37] uppercase">Architect</span>
+                <div className="h-[1px] flex-1 bg-zinc-200" />
+            </div>
+            <h1 className="text-[12vw] font-black uppercase text-black leading-[0.7] tracking-tighter mt-4">
+              Shoukath
+            </h1>
+          </motion.div>
+        </div>
       </div>
 
-      {/* 2. MINIMALIST TOP NAV */}
-      <header className="relative z-50 flex items-center justify-between px-8 py-8 lg:px-16">
-        <div className="flex items-center gap-2 group cursor-pointer">
-          <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse group-hover:scale-150 transition-transform"></div>
-          <h1 className="text-xl font-black tracking-tighter uppercase group-hover:tracking-widest transition-all duration-700">iQUE</h1>
-        </div>
-        
-        <nav className="hidden md:flex items-center gap-12 text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500">
-          <a href="#" className="hover:text-white transition-colors relative group">
-            Philosophy
-            <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-blue-500 transition-all group-hover:w-full"></span>
-          </a>
-          <a href="#" className="hover:text-white transition-colors relative group">
-            Intelligence
-            <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-blue-500 transition-all group-hover:w-full"></span>
-          </a>
-          <a href="#" className="hover:text-white transition-colors relative group">
-            Ecosystem
-            <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-blue-500 transition-all group-hover:w-full"></span>
-          </a>
-          <button className="px-6 py-2 rounded-full border border-white/10 hover:border-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] transition-all duration-500">
-            Contact
-          </button>
-        </nav>
-      </header>
+      {/* --- LAYER 3: THE CONTENT SCROLL --- */}
+      <div className="h-[200vh] pointer-events-none" />
 
-      {/* 3. HERO CONTENT (Staggered Typography & Depth) */}
-      <div className="relative z-10 flex h-full w-full flex-col items-center justify-center -mt-16">
-        
-        {/* Background Text (Behind Portrait) */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none w-full text-center">
-          <h2 className="text-[25vw] font-black leading-none tracking-tighter text-white/[0.01] uppercase italic">
-            LIMITLESS
-          </h2>
-        </div>
-
-        {/* The Portrait Layer */}
-        <div className="relative z-20 h-[82vh] w-auto aspect-[3/4] group">
-          {/* Viewfinder Brackets */}
-          <div className="absolute -inset-12 pointer-events-none opacity-0 group-hover:opacity-20 transition-all duration-1000 border-white/40 rounded-[2rem] scale-110 group-hover:scale-100">
-             <div className="absolute top-0 left-0 h-16 w-16 border-t-2 border-l-2 border-white/60 rounded-tl-3xl"></div>
-             <div className="absolute top-0 right-0 h-16 w-16 border-t-2 border-r-2 border-white/60 rounded-tr-3xl"></div>
-             <div className="absolute bottom-0 left-0 h-16 w-16 border-b-2 border-l-2 border-white/60 rounded-bl-3xl"></div>
-             <div className="absolute bottom-0 right-0 h-16 w-16 border-b-2 border-r-2 border-white/60 rounded-br-3xl"></div>
-          </div>
-
-          <Image
-            src="/shafi.png"
-            alt="Shafi Shoukath"
-            fill
-            priority
-            className="object-contain object-bottom saturate-0 group-hover:saturate-100 transition-all duration-1000 ease-in-out brightness-75 group-hover:brightness-110"
-          />
+      <section className="relative z-40 bg-white shadow-[0_-100px_100px_rgba(0,0,0,0.04)] px-6 lg:px-24 py-40">
+        <div className="max-w-[1400px] mx-auto">
           
-          {/* Subtle Reflection/Glass effect */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-transparent opacity-80"></div>
-          
-          {/* Floating Data Tags */}
-          <div className="absolute top-1/4 -left-16 p-4 backdrop-blur-2xl bg-white/5 border border-white/10 rounded-2xl shadow-2xl opacity-0 group-hover:opacity-100 translate-x-10 group-hover:translate-x-0 transition-all duration-700 delay-100">
-            <p className="text-[8px] font-black uppercase tracking-widest text-blue-400 mb-1">Targeting</p>
-            <p className="text-xs font-bold uppercase tracking-tighter">Visionary.exe</p>
+          {/* Header with Technical Data */}
+          <div className="flex flex-col md:flex-row justify-between items-start border-b-[6px] border-black pb-16 mb-32">
+            <div>
+                <p className="text-[10px] font-black text-[#2C518A] tracking-[1.5em] uppercase mb-4">Core_Portfolio_01</p>
+                <h2 className="text-8xl lg:text-[14rem] font-black uppercase tracking-tighter leading-[0.75]">
+                    ARCHIVE<span className="text-[#D4AF37]">.</span>
+                </h2>
+            </div>
+            <div className="mt-8 md:mt-0 text-right space-y-1">
+               <p className="text-[10px] font-black uppercase">BENGALURU_IND</p>
+               <p className="text-5xl font-thin tracking-tighter">2026©</p>
+            </div>
           </div>
-          <div className="absolute bottom-1/3 -right-20 p-4 backdrop-blur-2xl bg-white/5 border border-white/10 rounded-2xl shadow-2xl opacity-0 group-hover:opacity-100 -translate-x-10 group-hover:translate-x-0 transition-all duration-700 delay-200">
-            <p className="text-[8px] font-black uppercase tracking-widest text-indigo-400 mb-1">Access</p>
-            <p className="text-xs font-bold uppercase tracking-tighter">Founder_Root</p>
+
+          {/* Grid with Elementified Components */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+            
+            {/* Left Content (5 Columns) */}
+            <div className="lg:col-span-5 space-y-24">
+               <div className="group relative">
+                  <div className="absolute -left-8 top-0 h-full w-[2px] bg-[#D4AF37] scale-y-0 group-hover:scale-y-100 transition-transform duration-700 origin-top" />
+                  <h3 className="text-6xl font-light leading-none mb-8 italic uppercase">
+                    The <span className="font-black not-italic block mt-2 text-[#2C518A]">Bespoke Logic</span> System
+                  </h3>
+                  <p className="text-zinc-500 text-xl leading-relaxed font-medium">
+                    Designing at the intersection of violent aesthetics and surgical performance. 
+                    I build digital environments that act as defensive moats for visionary founders.
+                  </p>
+               </div>
+
+               <div className="grid grid-cols-2 gap-8 pt-12 border-t border-zinc-100">
+                  <div>
+                    <p className="text-[9px] font-black text-zinc-400 uppercase tracking-widest mb-2">Primary_Stack</p>
+                    <p className="text-sm font-bold">NEXT.JS / THREE.JS / GLSL</p>
+                  </div>
+                  <div>
+                    <p className="text-[9px] font-black text-zinc-400 uppercase tracking-widest mb-2">Focus_Area</p>
+                    <p className="text-sm font-bold">FINTECH / ECOSYSTEMS</p>
+                  </div>
+               </div>
+            </div>
+
+            {/* Right Interactive Card (7 Columns) */}
+            <div className="lg:col-span-7 relative">
+                <div className="bg-zinc-50 p-12 lg:p-20 relative overflow-hidden group min-h-[600px] flex flex-col justify-end">
+                    {/* Background Fragment */}
+                    <div className="absolute top-0 right-0 w-full h-full opacity-[0.03] grayscale pointer-events-none">
+                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+                    </div>
+
+                    <motion.div 
+                        whileHover={{ x: 20 }}
+                        className="relative z-10 space-y-6"
+                    >
+                        <span className="inline-block px-4 py-1 bg-black text-[#D4AF37] text-[10px] font-black uppercase tracking-widest">Featured_Module</span>
+                        <h4 className="text-5xl lg:text-7xl font-black uppercase tracking-tighter leading-none">Ecosystem <br /> Architecture</h4>
+                        <p className="text-zinc-500 max-w-sm italic border-l-4 border-[#2C518A] pl-6 py-2">
+                           "Converting chaotic complexity into distinct, high-leverage competitive advantages."
+                        </p>
+                        
+                        <div className="pt-8 flex items-center gap-6">
+                            <button className="h-16 w-16 rounded-full border-2 border-black flex items-center justify-center group-hover:bg-black transition-colors duration-500">
+                                <span className="text-xl group-hover:text-white transition-colors">→</span>
+                            </button>
+                            <span className="text-[10px] font-black uppercase tracking-[0.5em]">View Project Detail</span>
+                        </div>
+                    </motion.div>
+
+                    {/* Technical Decals */}
+                    <div className="absolute top-10 right-10 flex flex-col items-end">
+                        <span className="text-[60px] font-black text-black/5 leading-none select-none">001</span>
+                        <div className="w-20 h-[1px] bg-black/10 mt-2" />
+                    </div>
+                </div>
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* Foreground Text (In Front of Portrait) */}
-        <div className="absolute bottom-[10%] z-30 w-full text-center pointer-events-none px-6">
-          <div className="overflow-hidden">
-            <h3 className="text-7xl md:text-[12vw] font-black tracking-tighter leading-[0.8] mix-blend-difference">
-              SHAFI <span className="text-transparent stroke-white stroke-2 block md:inline" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.4)' }}>SHOUKATH</span>
+      {/* --- LAYER 5: THE HYPER-FOOTER --- */}
+      <footer className="relative z-40 bg-black text-white h-screen flex flex-col items-center justify-center px-10 overflow-hidden">
+         {/* Background Glow */}
+         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[#2C518A]/20 blur-[180px] pointer-events-none" />
+         
+         <div className="relative z-10 text-center flex flex-col items-center">
+            <span className="text-[10px] font-black tracking-[2em] uppercase text-[#D4AF37] mb-12 block ml-[2em]">Establish Connection</span>
+            <h3 className="text-[14vw] font-black uppercase tracking-tighter leading-none mb-16 mix-blend-difference">
+               S.SHOUKATH
             </h3>
-          </div>
-          <p className="mt-8 text-[10px] md:text-xs font-black tracking-[1em] text-blue-500/60 uppercase">
-            LIMITLESS <span className="text-white/20 mx-4">•</span> INTELLIGENCE <span className="text-white/20 mx-4">•</span> ARCHITECTURE
-          </p>
-        </div>
-      </div>
+            
+            <button className="group relative px-24 py-8 border border-white/20 hover:border-[#D4AF37] transition-all duration-700">
+               <div className="absolute inset-0 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+               <span className="relative z-10 text-xs font-black uppercase tracking-[0.5em] group-hover:text-black">Initialize Brief_</span>
+            </button>
+         </div>
 
-      {/* 4. SIDEBAR SOCIALS & INFO */}
-      <div className="absolute left-12 bottom-12 z-50 flex flex-col gap-8">
-        <div className="h-32 w-[1px] bg-gradient-to-t from-blue-500 via-blue-500/20 to-transparent"></div>
-        <div className="flex flex-col gap-6 text-[9px] font-bold uppercase tracking-[0.4em] text-zinc-600">
-          <a href="#" className="hover:text-blue-500 transition-colors -rotate-90 origin-left">LinkedIn</a>
-          <a href="#" className="hover:text-indigo-500 transition-colors -rotate-90 origin-left mt-16">Instagram</a>
-        </div>
-      </div>
-
-      {/* 5. BOTTOM STATUS BAR */}
-      <footer className="absolute bottom-0 w-full z-50 px-8 py-8 lg:px-16 flex justify-between items-end border-t border-white/5 bg-gradient-to-t from-black/80 to-transparent backdrop-blur-sm">
-        <div className="max-w-[350px] space-y-4">
-          <div className="flex items-center gap-4">
-             <span className="text-[10px] font-black text-blue-500 tracking-widest">SYSTEM.LOG</span>
-             <div className="h-[1px] flex-1 bg-white/10"></div>
-          </div>
-          <p className="text-[11px] leading-relaxed text-zinc-500 font-medium">
-            Bridging the chasm between raw data and human intuition. iQue develops next-generation cognitive structures for the digital elite.
-          </p>
-        </div>
-        
-        <div className="text-right flex flex-col items-end gap-3">
-          <div className="flex items-center gap-2">
-            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-600">Syncing Intelligence</span>
-            <div className="h-1 w-1 rounded-full bg-blue-500 animate-ping"></div>
-          </div>
-          <div className="flex gap-1.5">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="h-1.5 w-8 bg-white/5 rounded-full overflow-hidden border border-white/5">
-                <div 
-                  className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 animate-loading-status" 
-                  style={{ animationDelay: `${i * 0.15}s` }}
-                ></div>
-              </div>
-            ))}
-          </div>
-        </div>
+         {/* Bottom Footer Meta */}
+         <div className="absolute bottom-12 w-full px-12 flex justify-between items-end opacity-40">
+            <div className="text-[8px] font-mono leading-relaxed uppercase">
+                Design_System: Liquid Brutalism v4.0<br />
+                Build: React_Next_Framer
+            </div>
+            <div className="text-[8px] font-mono text-right leading-relaxed uppercase">
+                Current_Loc: 12.97°N, 77.59°E<br />
+                ©2026 ALL_RIGHTS_RESERVED
+            </div>
+         </div>
       </footer>
     </main>
   );
