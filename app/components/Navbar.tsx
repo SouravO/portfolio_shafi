@@ -17,7 +17,13 @@ export default function Navbar() {
           href="/about"
           className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-50"
         >
-          About
+          About Me
+        </Link>
+        <Link
+          href="/store"
+          className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-50"
+        >
+          Store
         </Link>
         <Link
           href="/blog"
@@ -26,10 +32,16 @@ export default function Navbar() {
           Blog
         </Link>
         <Link
-          href="/contact"
+          href="/media"
           className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-50"
         >
-          Contact
+          Media
+        </Link>
+        <Link
+          href="/projects"
+          className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-50"
+        >
+          Projects
         </Link>
       </div>
     </nav>
