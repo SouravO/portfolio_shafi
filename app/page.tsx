@@ -101,13 +101,7 @@ export default function GalleryCutHome() {
         />
 
         {/* Small 3D element (rotating torus) for depth */}
-        <div className="absolute right-16 top-32 w-72 h-72 pointer-events-none z-10">
-          <Canvas camera={{ position: [0, 0, 3], fov: 50 }}>
-            <ambientLight intensity={0.8} />
-            <directionalLight intensity={0.6} position={[5, 5, 5]} />
-            <RotatingTorus />
-          </Canvas>
-        </div>
+
       </section>
 
       {/* --- LAYER 2: SPLITTING PANELS & UI HUD --- */}
