@@ -2,9 +2,17 @@
 
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { HardDrive, Fingerprint, Activity, Radio, Cpu, Shield } from "lucide-react";
+import { HardDrive, Fingerprint, Activity, Radio, Cpu, Shield, LucideIcon } from "lucide-react";
 
-const DATA_NODES = [
+interface DataNode {
+  id: string;
+  label: string;
+  value: string;
+  icon: LucideIcon;
+  color: string;
+}
+
+const DATA_NODES: DataNode[] = [
   { id: "01", label: "Bios_Init", value: "STABLE", icon: Fingerprint, color: "#ef4444" },
   { id: "02", label: "Sync_Freq", value: "432Hz", icon: Radio, color: "#06b6d4" },
   { id: "03", label: "Core_Load", value: "89.2%", icon: Cpu, color: "#eab308" },
@@ -13,7 +21,7 @@ const DATA_NODES = [
 ];
 
 export default function KineticDataStream() {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: containerRef });
   
   // Smooth the scroll movement
@@ -24,7 +32,7 @@ export default function KineticDataStream() {
     <div ref={containerRef} className="h-[400vh] bg-[#050505] text-zinc-400 font-mono overflow-x-hidden">
       {/* Background Grid */}
       <div className="fixed inset-0 opacity-20 pointer-events-none" 
-           style={{ backgroundImage: `linear-gradient(#18181b 1px, transparent 1px), linear-gradient(90deg, #18181b 1px, transparent 1px)`, size: '40px 40px', backgroundSize: '40px 40px' }} />
+           style={{ backgroundImage: `linear-gradient(#18181b 1px, transparent 1px), linear-gradient(90deg, #18181b 1px, transparent 1px)`, backgroundSize: '40px 40px' }} />
 
       <div className="sticky top-0 h-screen flex items-center overflow-hidden">
         {/* Main Scrolling Track */}
@@ -82,7 +90,12 @@ export default function KineticDataStream() {
   );
 }
 
-function DataCard({ node, index }) {
+interface DataCardProps {
+  node: DataNode;
+  index: number;
+}
+
+function DataCard({ node, index }: DataCardProps) {
   return (
     <div className="flex-shrink-0 group">
       <div className="relative">

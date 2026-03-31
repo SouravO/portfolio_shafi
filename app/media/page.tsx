@@ -7,10 +7,17 @@ const Icons = {
   User: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
   Mail: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>,
   ArrowUp: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="m5 12 7-7 7 7M12 19V5"/></svg>,
-  Zap: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" fill="currentColor"><path d="M13 2 L3 14 L12 14 L11 22 L21 10 L12 10 L13 2 Z"/></svg>
+  Zap: () => <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="currentColor"><path d="M13 2 L3 14 L12 14 L11 22 L21 10 L12 10 L13 2 Z"/></svg>
 };
 
-const SOCIAL_NODES = [
+interface SocialNode {
+  id: number;
+  label: string;
+  sub: string;
+  color: string;
+}
+
+const SOCIAL_NODES: SocialNode[] = [
   { id: 1, label: 'INSTAGRAM', sub: 'Visual Feed', color: '#00E5FF' },
   { id: 2, label: 'LINKEDIN', sub: 'Professional', color: '#2C518A' },
   { id: 3, label: 'GITHUB', sub: 'Source Code', color: '#FFFFFF' },
@@ -113,7 +120,12 @@ const IPhoneCinematicContact = () => {
 
 // --- SUB-COMPONENTS ---
 
-const SystemField = ({ placeholder, icon }) => (
+interface SystemFieldProps {
+  placeholder: string;
+  icon: React.ReactNode;
+}
+
+const SystemField = ({ placeholder, icon }: SystemFieldProps) => (
   <div className="relative group">
     <div className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-700 group-focus-within:text-blue-500 transition-colors">
       {icon}
@@ -126,7 +138,11 @@ const SystemField = ({ placeholder, icon }) => (
   </div>
 );
 
-const FixedLinkCard = ({ node }) => (
+interface FixedLinkCardProps {
+  node: SocialNode;
+}
+
+const FixedLinkCard = ({ node }: FixedLinkCardProps) => (
   <motion.div 
     whileHover={{ x: 10, backgroundColor: "rgba(255,255,255,0.05)" }}
     className="group flex items-center justify-between p-6 bg-white/[0.02] border border-white/5 rounded-[32px] cursor-pointer transition-all relative overflow-hidden"
