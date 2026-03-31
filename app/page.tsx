@@ -75,7 +75,6 @@ export default function GalleryCutHome() {
       />
 
       {/* --- INFRASTRUCTURE: SCANNER LINE --- */}
-    
 
       {/* --- LAYER 1: THE FIXED HERO --- */}
       <section className="fixed top-0 left-0 w-full h-screen z-0 bg-white overflow-hidden">
@@ -101,7 +100,6 @@ export default function GalleryCutHome() {
         />
 
         {/* Small 3D element (rotating torus) for depth */}
-
       </section>
 
       {/* --- LAYER 2: SPLITTING PANELS & UI HUD --- */}
@@ -234,8 +232,6 @@ export default function GalleryCutHome() {
           </div>
         </div>
       </section>
-
-     
 
       {/* --- ORIGINAL LAYER 3: THE ARCHIVE (MODIFIED PADDING) --- */}
       <section className="relative z-40 bg-white shadow-[0_-100px_100px_rgba(0,0,0,0.04)] px-6 lg:px-24 py-40">
