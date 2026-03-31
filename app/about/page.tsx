@@ -75,8 +75,9 @@ const WarpArchive = () => {
       title: "Future / Logic",
       content:
         "Clear thinking creates clarity in action. We define the long-term strategy for infrastructure thinking and execution.",
-      img: "",
-      position: "object-center",
+      img: "/shafi6.jpg",
+      position: "object-[center_15%]", 
+
     },
     {
       id: "06",
@@ -84,7 +85,7 @@ const WarpArchive = () => {
       title: "Builder / Assets",
       content:
         "A curated collection of playbooks designed for institutions and entrepreneurs building at scale.",
-      img: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200",
+      img: "/shafi7.jpg",
       position: "object-center",
     },
   ];
@@ -103,7 +104,7 @@ const WarpArchive = () => {
       className="relative h-[600vh] bg-[#050505] text-white font-sans selection:bg-[#D4AF37] selection:text-black overflow-clip"
     >
       {/* 1. PROGRESS HUD (TECHNICAL BARS) */}
-      <div className="fixed top-12 left-1/2 -translate-x-1/2 z-[100] flex items-end gap-3 h-8">
+      {/* <div className="fixed top-12 left-1/2 -translate-x-1/2 z-[100] flex items-end gap-3 h-8">
         {dossier.map((_, i) => (
           <motion.div
             key={i}
@@ -116,7 +117,7 @@ const WarpArchive = () => {
             className="w-[2px] rounded-full"
           />
         ))}
-      </div>
+      </div> */}
 
       {/* 2. THE IMAGE PORTAL (THE "SMOOTH" ENGINE) */}
       <div className="fixed inset-0 flex flex-col items-center justify-center z-40 pointer-events-none">
