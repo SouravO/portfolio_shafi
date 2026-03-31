@@ -54,7 +54,7 @@ const WarpArchive = () => {
       title: "Beyond / Borders",
       content:
         "Talent and capital are no longer regional. We design ecosystems that connect innovation across nations.",
-      img: "/shafi4.jpg",
+      img: "/shafi4.JPG",
       position: "object-center",
     },
     {
