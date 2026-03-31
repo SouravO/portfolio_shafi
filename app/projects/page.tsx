@@ -109,4 +109,4 @@ function DataCard({ node, index }) {
   );
 };
 
-export default SlitScanGallery;
+export default DataCard;

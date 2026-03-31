@@ -4,187 +4,112 @@ import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
 
-const WarpArchive = () => {
-  const containerRef = useRef(null);
+const dossier = [
+  { id: "01", tag: "INTRODUCTION", title: "VENTURE\nBUILDER", content: "I build ventures that solve real problems faced by entrepreneurs, startups, investors, and governments. My mission is to create an environment where thousands of startups rise, contribute to the economy, help investors achieve success, enable governments to fast-track development, and improve everyday life for citizens.", img: "/Shafi1.jpg" },
+  { id: "02", tag: "CORE_PILLARS", title: "PROBLEM-FIRST\nAPPROACH", content: "Diagnose deeply, design precisely, execute effectively.", img: "/shafi2.heic" },
+  { id: "03", tag: "CORE_PILLARS", title: "PRIVATE ECOSYSTEM\nBUILDING", content: "Independent, impact-driven, and stakeholder-focused.", img: "/shafi4.JPG" },
+  { id: "04", tag: "CORE_PILLARS", title: "CROSS-STAKEHOLDER\nIMPACT", content: "From founders to policymakers.", img: "/shafi3.jpg" },
+  { id: "05", tag: "PERSONAL_BACKGROUND", title: "RURAL ROOTS\nTO GLOBAL IMPACT", content: "Raised in a rural village in Kerala, I started my first venture with no access to practical startup guidance, funding pathways, or the right networks. Speaking with other entrepreneurs, I realised this was not my story alone — it was a systemic gap.", img: "/shafi6.jpg" },
+  { id: "06", tag: "MISSION", title: "SUSTAINABLE\nECOSYSTEM", content: "To build a privately held startup ecosystem where real problems are met with real solutions, and where execution leads to measurable outcomes.", img: "/shafi7.jpg" },
+];
 
+const ApertureArchive = () => {
+  const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Low stiffness + High damping = Premium "Heavy" feel
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 70,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
-  const dossier = [
-    {
-      id: "01",
-      tag: "THE ORIGIN",
-      title: "Architectural / Intent",
-      content:
-        "Founded on the belief that economies fail due to lack of structure, not talent. We are the engineers of the systems required for sovereign growth.",
-      img: "/Shafi1.jpg",
-      position: "object-[center_25%]",
-    },
-    {
-      id: "02",
-      tag: "THE MISSION",
-      title: "The Unified / Grid",
-      content:
-        "Our purpose is alignment. We synchronize Entrepreneurs, Startups, and Investors into a single, high-performance governance framework.",
-      img: "/shafi2.heic",
-      position: "object-[center_25%]",
-    },
-    {
-      id: "03",
-      tag: "THE REACH",
-      title: "Global / Footprint",
-      content:
-        "Innovation has no borders. We design the transnational infrastructure that allows capital and ideas to bypass regional limitations.",
-      img: "/shafi4.JPG",
-      position: "object-center",
-    },
-    {
-      id: "04",
-      tag: "THE VOICE",
-      title: "Strategic / Authority",
-      content:
-        "Shaping the global discourse. We participate in high-level forums to redefine how systemic value is engineered for the future.",
-      img: "/shafi3.jpg",
-      position: "object-[center_15%]",
-    },
-    {
-      id: "05",
-      tag: "THE PHILOSOPHY",
-      title: "Predictive / Logic",
-      content:
-        "Precision in thought is our core identity. We apply first-principles logic to architect long-term resilience for the modern world.",
-      img: "/shafi6.jpg",
-      position: "object-[center_15%]",
-    },
-    {
-      id: "06",
-      tag: "THE ARCHIVE",
-      title: "Operational / Assets",
-      content:
-        "The cumulative intelligence of our work. A proprietary collection of blueprints designed for building at global scale.",
-      img: "/shafi7.jpg",
-      position: "object-center",
-    },
-  ];
-
-  // Background Rail Movement
-  const xTranslate = useTransform(smoothProgress, [0, 1], ["0%", "-83.33%"]);
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 40, damping: 25 });
 
   return (
-    <div
-      ref={containerRef}
-      className="relative h-[200vh] bg-[#050505] text-white selection:bg-[#D4AF37] selection:text-black overflow-clip"
-    >
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+    <div ref={containerRef} className="relative h-[600vh] bg-[#080808] text-white font-sans selection:bg-white selection:text-black">
+      <div className="sticky top-0 h-screen w-full flex items-center overflow-hidden px-6 md:px-20">
         
-        {/* 1. GHOST RAIL (Background Text) */}
-        <div className="absolute inset-0 flex items-center z-10">
-          <motion.div style={{ x: xTranslate }} className="flex w-[600%]">
-            {dossier.map((item) => (
-              <div key={item.id} className="w-screen flex justify-center">
-                <span className="text-[35vw] font-black outline-text italic uppercase opacity-[0.03]">
-                  {item.tag}
-                </span>
-              </div>
-            ))}
-          </motion.div>
+        {/* LEFT: THE APERTURE (Masked Image) */}
+        <div className="relative w-full md:w-1/2 aspect-square md:aspect-[4/5] overflow-hidden group">
+          {dossier.map((item, i) => {
+            const start = i / dossier.length;
+            const end = (i + 1) / dossier.length;
+            
+            // Image reveal clip-path animation
+            const clipPath = useTransform(
+              smoothProgress,
+              [start - 0.05, start, end - 0.05, end],
+              ["inset(100% 0 0 0)", "inset(0% 0 0 0)", "inset(0% 0 0 0)", "inset(0 0 100% 0)"]
+            );
+
+            return (
+              <motion.div
+                key={`img-${item.id}`}
+                style={{ clipPath, zIndex: dossier.length - i }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={item.img}
+                  alt={item.title}
+                  fill
+                  className="object-cover grayscale brightness-75 contrast-125"
+                />
+                {/* HUD Overlay for image */}
+                <div className="absolute inset-0 border-[0.5px] border-white/20 m-4 flex flex-col justify-between p-4 pointer-events-none">
+                  <span className="text-[10px] font-mono opacity-40">IMG_REF_{item.id}</span>
+                  <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
-        {/* 2. CENTRAL PORTAL (Images & Text) */}
-        <div className="relative z-40 flex flex-col items-center justify-center w-full">
-          
-          {/* IMAGE STACK - Dynamic Positioning Fixed */}
-          <div className="relative w-[85vw] md:w-[45vw] aspect-[16/10] overflow-hidden rounded-sm bg-zinc-900 shadow-2xl border border-white/5">
-            {dossier.map((item, i) => {
-              const start = i / dossier.length;
-              const end = (i + 1) / dossier.length;
+        {/* RIGHT: THE DATAFEED (Text) */}
+        <div className="absolute md:relative right-6 md:right-0 md:w-1/2 h-full flex flex-col justify-center pl-0 md:pl-20 z-50">
+          {dossier.map((item, i) => {
+            const start = i / dossier.length;
+            const end = (i + 1) / dossier.length;
 
-              // Smooth interpolation for Image
-              const opacity = useTransform(
-                smoothProgress,
-                [start - 0.08, start, end - 0.08, end],
-                [0, 1, 1, 0]
-              );
-              const scale = useTransform(
-                smoothProgress,
-                [start - 0.08, start, end - 0.08, end],
-                [1.1, 1, 1, 0.95]
-              );
+            const opacity = useTransform(smoothProgress, [start, start + 0.05, end - 0.05, end], [0, 1, 1, 0]);
+            const x = useTransform(smoothProgress, [start, start + 0.05], [50, 0]);
 
-              return (
-                <motion.div
-                  key={`img-${item.id}`}
-                  style={{ opacity, scale }}
-                  className="absolute inset-0"
-                >
-                  <Image
-                    src={item.img}
-                    alt={item.title}
-                    fill
-                    // Applying item.position to fix the image alignment
-                    className={`object-cover grayscale contrast-[1.1] ${item.position || "object-center"}`}
-                    priority={i === 0}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* TEXT STACK - Liquid Fading */}
-          <div className="relative w-[85vw] md:w-[40vw] h-40 mt-12">
-            {dossier.map((item, i) => {
-              const start = i / dossier.length;
-              const end = (i + 1) / dossier.length;
-
-              // Smooth interpolation for Text
-              const opacity = useTransform(
-                smoothProgress,
-                [start - 0.04, start, end - 0.04, end],
-                [0, 1, 1, 0]
-              );
-              const y = useTransform(
-                smoothProgress,
-                [start - 0.04, start, end - 0.04, end],
-                [15, 0, 0, -15]
-              );
-
-              return (
-                <motion.div
-                  key={`text-${item.id}`}
-                  style={{ opacity, y }}
-                  className="absolute inset-0 flex flex-col items-center text-center pointer-events-none"
-                >
-                  <h2 className="text-4xl md:text-6xl font-serif italic tracking-tighter text-white mb-4">
-                    {item.title.replace(" / ", " ")}
-                  </h2>
-                  <p className="text-xs md:text-sm font-light text-zinc-400 max-w-sm uppercase tracking-[0.2em] leading-relaxed">
+            return (
+              <motion.div
+                key={`text-${item.id}`}
+                style={{ opacity, x, pointerEvents: "none" }}
+                className="absolute flex flex-col items-start gap-4"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="h-[1px] w-8 bg-white" />
+                  <span className="font-mono text-[11px] tracking-[0.4em] uppercase text-zinc-500">
+                    {item.tag}
+                  </span>
+                </div>
+                
+                <h2 className="text-5xl md:text-8xl font-black tracking-[calc(-0.05em)] leading-[0.85] whitespace-pre-line uppercase">
+                  {item.title}
+                </h2>
+                
+                <div className="max-w-xs space-y-4 pt-6">
+                  <p className="text-sm font-medium text-zinc-400 leading-relaxed uppercase tracking-wider">
                     {item.content}
                   </p>
-                </motion.div>
-              );
-            })}
-          </div>
+                  <div className="flex gap-2 text-[10px] font-mono text-zinc-600">
+                    <span>STATUS: ACTIVE</span>
+                    <span>/</span>
+                    <span>LOC: GLOBAL_GRID</span>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* PERIPHERAL UI (The "Glass" Frame) */}
+        <div className="fixed inset-0 border-[1rem] border-[#080808] z-[100] pointer-events-none" />
+        <div className="fixed bottom-10 left-10 text-[10px] font-mono tracking-widest text-zinc-700 z-[101]">
+          ARCHIVE_SYSTEM_V.02 // {new Date().getFullYear()}
         </div>
       </div>
-
-      <style jsx>{`
-        .outline-text {
-          color: transparent;
-          -webkit-text-stroke: 1px rgba(255, 255, 255, 1);
-        }
-      `}</style>
     </div>
   );
 };
 
-export default WarpArchive;
+export default ApertureArchive;
