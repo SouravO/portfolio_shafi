@@ -1,195 +1,186 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-  AnimatePresence,
-  useMotionValueEvent,
-} from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
 
 const WarpArchive = () => {
   const containerRef = useRef(null);
-  const [index, setIndex] = useState(0);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Tight, high-performance spring to eliminate wobble while maintaining a hint of silkiness
+  // Low stiffness + High damping = Premium "Heavy" feel
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 150,
-    damping: 40,
+    stiffness: 70,
+    damping: 30,
     restDelta: 0.001,
   });
-
-  const xTranslate = useTransform(smoothProgress, [0, 1], ["0%", "-83.33%"]);
 
   const dossier = [
     {
       id: "01",
-      tag: "VISION",
-      title: "Structure / Talent",
+      tag: "THE ORIGIN",
+      title: "Architectural / Intent",
       content:
-        "Most economies struggle not from lack of talent, but from lack of structure. We architect the systems required for growth.",
+        "Founded on the belief that economies fail due to lack of structure, not talent. We are the engineers of the systems required for sovereign growth.",
       img: "/Shafi1.jpg",
       position: "object-[center_25%]",
     },
     {
       id: "02",
-      tag: "ECOSYSTEM",
-      title: "The Quad / Pillars",
+      tag: "THE MISSION",
+      title: "The Unified / Grid",
       content:
-        "Sustainable growth happens when Entrepreneurs, Startups, and Investors align within a single governance grid.",
+        "Our purpose is alignment. We synchronize Entrepreneurs, Startups, and Investors into a single, high-performance governance framework.",
       img: "/shafi2.heic",
       position: "object-[center_25%]",
     },
     {
       id: "03",
-      tag: "GLOBAL",
-      title: "Beyond / Borders",
+      tag: "THE REACH",
+      title: "Global / Footprint",
       content:
-        "Talent and capital are no longer regional. We design ecosystems that connect innovation across nations.",
+        "Innovation has no borders. We design the transnational infrastructure that allows capital and ideas to bypass regional limitations.",
       img: "/shafi4.JPG",
       position: "object-center",
     },
     {
       id: "04",
-      tag: "PRESENCE",
-      title: "Global / Voice",
+      tag: "THE VOICE",
+      title: "Strategic / Authority",
       content:
-        "Engaging in dialogue and sharing ideas across forums to shape the future of systemic economic growth.",
+        "Shaping the global discourse. We participate in high-level forums to redefine how systemic value is engineered for the future.",
       img: "/shafi3.jpg",
       position: "object-[center_15%]",
     },
     {
       id: "05",
-      tag: "INSIGHTS",
-      title: "Future / Logic",
+      tag: "THE PHILOSOPHY",
+      title: "Predictive / Logic",
       content:
-        "Clear thinking creates clarity in action. We define the long-term strategy for infrastructure thinking and execution.",
+        "Precision in thought is our core identity. We apply first-principles logic to architect long-term resilience for the modern world.",
       img: "/shafi6.jpg",
       position: "object-[center_15%]",
     },
     {
       id: "06",
-      tag: "RESOURCES",
-      title: "Builder / Assets",
+      tag: "THE ARCHIVE",
+      title: "Operational / Assets",
       content:
-        "A curated collection of playbooks designed for institutions and entrepreneurs building at scale.",
+        "The cumulative intelligence of our work. A proprietary collection of blueprints designed for building at global scale.",
       img: "/shafi7.jpg",
       position: "object-center",
     },
   ];
 
-  // Use raw scrollYProgress for immediate index updates
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const newIndex = Math.min(
-      Math.floor(latest * dossier.length),
-      dossier.length - 1,
-    );
-    if (newIndex !== index) setIndex(newIndex);
-  });
+  // Background Rail Movement
+  const xTranslate = useTransform(smoothProgress, [0, 1], ["0%", "-83.33%"]);
 
   return (
     <div
       ref={containerRef}
-      className="relative h-[200vh] bg-[#050505] text-white font-sans selection:bg-[#D4AF37] selection:text-black overflow-clip"
+      className="relative h-[200vh] bg-[#050505] text-white selection:bg-[#D4AF37] selection:text-black overflow-clip"
     >
-      {/* 2. THE IMAGE PORTAL */}
-      <div className="fixed inset-0 flex flex-col items-center justify-center z-40 pointer-events-none">
-        <div className="relative w-[85vw] md:w-[45vw] aspect-[16/10] overflow-hidden rounded-sm bg-zinc-900">
-          <AnimatePresence mode="popLayout" initial={false}>
-            <motion.div
-              key={index}
-              initial={{
-                opacity: 0,
-                scale: 1.02,
-                filter: "blur(10px)",
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                filter: "blur(0px)",
-              }}
-              exit={{
-                opacity: 0,
-                scale: 0.98,
-                filter: "blur(10px)",
-              }}
-              transition={{
-                duration: 0.5,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="absolute inset-0 border border-white/5 shadow-2xl"
-            >
-              <Image
-                src={dossier[index].img}
-                alt="Archive Focus"
-                fill
-                className={`object-cover grayscale contrast-[1.1] ${dossier[index].position || "object-center"}`}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            </motion.div>
-          </AnimatePresence>
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+        
+        {/* 1. GHOST RAIL (Background Text) */}
+        <div className="absolute inset-0 flex items-center z-10">
+          <motion.div style={{ x: xTranslate }} className="flex w-[600%]">
+            {dossier.map((item) => (
+              <div key={item.id} className="w-screen flex justify-center">
+                <span className="text-[35vw] font-black outline-text italic uppercase opacity-[0.03]">
+                  {item.tag}
+                </span>
+              </div>
+            ))}
+          </motion.div>
         </div>
 
-        {/* 3. CONTENT BOX */}
-        <div className="w-[85vw] md:w-[40vw] mt-12 text-center pointer-events-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={index}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              variants={{
-                initial: { opacity: 0, y: 15 },
-                animate: { opacity: 1, y: 0 },
-                exit: { opacity: 0, y: -15 },
-              }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-6"
-            >
-              <h2 className="text-5xl md:text-7xl font-serif italic tracking-tighter text-white">
-                {dossier[index].title.split(" / ").join(" ")}
-              </h2>
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.1 }}
-                className="text-xs md:text-sm font-light text-zinc-500 max-w-sm mx-auto uppercase tracking-[0.2em] leading-relaxed"
-              >
-                {dossier[index].content}
-              </motion.p>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
+        {/* 2. CENTRAL PORTAL (Images & Text) */}
+        <div className="relative z-40 flex flex-col items-center justify-center w-full">
+          
+          {/* IMAGE STACK - Dynamic Positioning Fixed */}
+          <div className="relative w-[85vw] md:w-[45vw] aspect-[16/10] overflow-hidden rounded-sm bg-zinc-900 shadow-2xl border border-white/5">
+            {dossier.map((item, i) => {
+              const start = i / dossier.length;
+              const end = (i + 1) / dossier.length;
 
-      {/* 4. BACKGROUND GHOST RAIL (SILKY HORIZONTAL) */}
-      <div className="sticky top-0 h-screen w-full flex items-center z-10 opacity-[0.05]">
-        <motion.div style={{ x: xTranslate }} className="flex h-full w-[600%]">
-          {dossier.map((item) => (
-            <div
-              key={item.id}
-              className="relative w-screen h-full flex items-center justify-center"
-            >
-              <span className="text-[40vw] font-black leading-none uppercase select-none outline-text italic">
-                {item.tag}
-              </span>
-            </div>
-          ))}
-        </motion.div>
+              // Smooth interpolation for Image
+              const opacity = useTransform(
+                smoothProgress,
+                [start - 0.08, start, end - 0.08, end],
+                [0, 1, 1, 0]
+              );
+              const scale = useTransform(
+                smoothProgress,
+                [start - 0.08, start, end - 0.08, end],
+                [1.1, 1, 1, 0.95]
+              );
+
+              return (
+                <motion.div
+                  key={`img-${item.id}`}
+                  style={{ opacity, scale }}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={item.img}
+                    alt={item.title}
+                    fill
+                    // Applying item.position to fix the image alignment
+                    className={`object-cover grayscale contrast-[1.1] ${item.position || "object-center"}`}
+                    priority={i === 0}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* TEXT STACK - Liquid Fading */}
+          <div className="relative w-[85vw] md:w-[40vw] h-40 mt-12">
+            {dossier.map((item, i) => {
+              const start = i / dossier.length;
+              const end = (i + 1) / dossier.length;
+
+              // Smooth interpolation for Text
+              const opacity = useTransform(
+                smoothProgress,
+                [start - 0.04, start, end - 0.04, end],
+                [0, 1, 1, 0]
+              );
+              const y = useTransform(
+                smoothProgress,
+                [start - 0.04, start, end - 0.04, end],
+                [15, 0, 0, -15]
+              );
+
+              return (
+                <motion.div
+                  key={`text-${item.id}`}
+                  style={{ opacity, y }}
+                  className="absolute inset-0 flex flex-col items-center text-center pointer-events-none"
+                >
+                  <h2 className="text-4xl md:text-6xl font-serif italic tracking-tighter text-white mb-4">
+                    {item.title.replace(" / ", " ")}
+                  </h2>
+                  <p className="text-xs md:text-sm font-light text-zinc-400 max-w-sm uppercase tracking-[0.2em] leading-relaxed">
+                    {item.content}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       <style jsx>{`
         .outline-text {
           color: transparent;
-          -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+          -webkit-text-stroke: 1px rgba(255, 255, 255, 1);
         }
       `}</style>
     </div>
