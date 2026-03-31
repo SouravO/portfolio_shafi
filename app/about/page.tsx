@@ -91,11 +91,7 @@ const ApertureArchive = () => {
                   <p className="text-xs sm:text-sm font-medium text-zinc-400 leading-relaxed uppercase tracking-wider">
                     {item.content}
                   </p>
-                  <div className="flex gap-2 text-[8px] sm:text-[10px] font-mono text-zinc-600">
-                    <span>STATUS: ACTIVE</span>
-                    <span>/</span>
-                    <span>LOC: GLOBAL_GRID</span>
-                  </div>
+                 
                 </div>
               </motion.div>
             );
@@ -104,9 +100,7 @@ const ApertureArchive = () => {
 
         {/* PERIPHERAL UI (The "Glass" Frame) */}
         <div className="fixed inset-0 border-[0.5rem] sm:border-[1rem] border-[#080808] z-[100] pointer-events-none" />
-        <div className="fixed bottom-4 sm:bottom-6 md:bottom-8 lg:bottom-10 left-4 sm:left-6 md:left-8 lg:left-10 text-[8px] sm:text-[10px] font-mono tracking-widest text-zinc-700 z-[101]">
-          ARCHIVE_SYSTEM_V.02 // {new Date().getFullYear()}
-        </div>
+       
       </div>
     </div>
   );

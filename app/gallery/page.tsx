@@ -22,7 +22,6 @@ const ExpandingGalleryPage = () => {
       <nav className="fixed top-0 left-0 w-full z-50 px-10 py-8 flex justify-between items-center mix-blend-difference">
         <div className="flex items-center gap-4">
           <div className="w-10 h-10 bg-white text-black flex items-center justify-center font-black text-xl">G.</div>
-          <span className="text-[10px] font-mono tracking-[0.5em] uppercase opacity-50">Archive_System_v4.0</span>
         </div>
         <div className="hidden md:block text-right">
           <span className="text-[8px] font-mono tracking-widest opacity-30 block">LAT: 12.9716° N</span>
@@ -44,9 +43,7 @@ const ExpandingGalleryPage = () => {
           </motion.h1>
           <div className="mt-6 flex items-center gap-6">
             <div className="h-px w-20 bg-[#D4AF37]" />
-            <p className="text-[10px] font-mono tracking-[0.8em] text-zinc-500 uppercase">
-              Architectural_Vision_Capture
-            </p>
+            
           </div>
         </header>
 
@@ -109,9 +106,7 @@ const ExpandingGalleryPage = () => {
         {/* Additional Technical Footer */}
         <footer className="mt-20 flex flex-col md:flex-row justify-between items-end gap-10">
           <div className="max-w-md">
-            <p className="text-zinc-500 text-sm leading-relaxed">
-              Unified visual framework capturing the intersection of structural logic and liquid aesthetics. Each node represents a distinct phase in the architectural evolution.
-            </p>
+            
           </div>
           <div className="flex gap-10 items-center">
             <div className="text-right">

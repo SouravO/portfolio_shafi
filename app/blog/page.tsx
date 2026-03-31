@@ -134,9 +134,7 @@ export default function HorizontalWowBlog() {
           style={{ x: smoothBgX }}
           className="absolute inset-0 flex items-center whitespace-nowrap z-0 select-none pointer-events-none"
         >
-          <span className="text-[15vh] sm:text-[20vh] md:text-[25vh] font-black text-white/[0.02] leading-none">
-            EXPLORE {activeTab.toUpperCase()} INSIGHTS — ARCHIVE 2026 — 
-          </span>
+          
         </motion.div>
 
         {/* Horizontal Content Grid */}

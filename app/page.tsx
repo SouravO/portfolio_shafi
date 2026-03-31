@@ -146,7 +146,7 @@ export default function GalleryCutHome() {
             <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-[12vw] font-thin uppercase text-black leading-[0.7] tracking-[-0.05em] mb-2 sm:mb-4">Shafi</h1>
             <div className="flex items-center gap-3 sm:gap-6 w-full px-6 sm:px-12">
               <div className="h-[1px] flex-1 bg-zinc-200" />
-              <span className="text-[8px] sm:text-[10px] font-black tracking-[1.2em] text-[#D4AF37] uppercase">Architect</span>
+              <span className="text-[8px] sm:text-[10px] font-black tracking-[1.2em] text-[#D4AF37] uppercase">Finding The Next Leaders</span>
               <div className="h-[1px] flex-1 bg-zinc-200" />
             </div>
             <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-[12vw] font-black uppercase text-black leading-[0.7] tracking-tighter mt-2 sm:mt-4">Shoukath</h1>
@@ -184,7 +184,7 @@ export default function GalleryCutHome() {
         <div className="absolute top-0 left-1/4 w-[300px] sm:w-[400px] md:w-[500px] h-[300px] sm:h-[400px] md:h-[500px] bg-[#2C518A]/10 rounded-full blur-[120px] pointer-events-none" />
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10">
           <div className="relative mb-12 sm:mb-16 md:mb-24 border-l-2 border-[#D4AF37] pl-4 sm:pl-6 md:pl-8">
-            <span className="text-[8px] sm:text-[10px] font-mono font-bold text-[#D4AF37] uppercase tracking-[0.8em] block mb-2">System_Architecture // v4.0</span>
+            {/* <span className="text-[8px] sm:text-[10px] font-mono font-bold text-[#D4AF37] uppercase tracking-[0.8em] block mb-2">System_Architecture // v4.0</span> */}
             <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-black uppercase tracking-tighter text-white leading-none">
               Global Scale <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-200 to-zinc-500">Infrastructure</span>
             </h3>
