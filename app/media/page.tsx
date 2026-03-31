@@ -2,178 +2,142 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
-// --- SYSTEM-GRADE SVG SET ---
-const Icons = {
-  User: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
-  Mail: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>,
-  ArrowUp: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="m5 12 7-7 7 7M12 19V5"/></svg>,
-  Zap: () => <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="currentColor"><path d="M13 2 L3 14 L12 14 L11 22 L21 10 L12 10 L13 2 Z"/></svg>
-};
-
-interface SocialNode {
-  id: number;
-  label: string;
-  sub: string;
-  color: string;
-}
-
-const SOCIAL_NODES: SocialNode[] = [
-  { id: 1, label: 'INSTAGRAM', sub: 'Visual Feed', color: '#00E5FF' },
-  { id: 2, label: 'LINKEDIN', sub: 'Professional', color: '#2C518A' },
-  { id: 3, label: 'GITHUB', sub: 'Source Code', color: '#FFFFFF' },
-  { id: 4, label: 'TWITTER', sub: 'Dev Logs', color: '#FF5E00' },
+// Palette: Obsidian, Titanium Gold, Royal Blue, Bone White
+const SOCIAL_LINKS = [
+  { id: 1, title: "X / TWITTER", color: "#000000", grad: "linear-gradient(135deg, #111 0%, #000 100%)", url: "https://x.com" },
+  { id: 2, title: "INSTAGRAM", color: "#D4AF37", grad: "linear-gradient(135deg, #C5A059 0%, #F5E6AD 100%)", url: "https://www.instagram.com/shafishoukath?igsh=MTJsNGpjdXF0YTFmMg==" },
+  { id: 3, title: "LINKEDIN", color: "#0077B5", grad: "linear-gradient(135deg, #00446A 0%, #0077B5 100%)", url: "https://www.linkedin.com/in/shafi-shoukath/" },
+  { id: 4, title: "FACEBOOK", color: "#1877F2", grad: "linear-gradient(135deg, #0A4DA0 0%, #1877F2 100%)", url: "https://facebook.com" },
 ];
 
-const IPhoneCinematicContact = () => {
+const iPhone17ProMaxSocial = () => {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  const smooth = useSpring(scrollYProgress, { stiffness: 50, damping: 25 });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 70, damping: 25 });
 
-  // MOBILE SCREEN ANIMATIONS
-  const scale = useTransform(smooth, [0, 0.4, 0.6, 1], [0.9, 1.6, 1.6, 1.1]);
-  const rotateY = useTransform(smooth, [0, 0.5, 1], [-10, 0, 10]);
-  const opacity = useTransform(smooth, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
+  // 17 Pro Max Motion
+  const rotateX = useTransform(smoothProgress, [0, 0.5], [30, 0]);
+  const rotateY = useTransform(smoothProgress, [0, 0.5], [-15, 0]);
+  const scale = useTransform(smoothProgress, [0, 0.2, 0.8, 1], [0.75, 1, 1, 5]);
+  const phoneX = useTransform(smoothProgress, [0.7, 1], [0, -1000]);
 
   return (
-    <div ref={containerRef} className="relative h-[650vh] bg-[#020202] text-white overflow-clip selection:bg-blue-500/50">
-      
-      {/* 1. LAYOUT SPLIT: LEFT (SCROLL) | RIGHT (FIXED) */}
-      <div className="fixed inset-0 flex">
+    <div ref={containerRef} className="relative h-[800vh] bg-[#0a0a0a] overflow-clip">
+      {/* LUXURY GRID */}
+      <div className="fixed inset-0 z-0 opacity-10" 
+           style={{ 
+             backgroundImage: `linear-gradient(#C5A059 1px, transparent 1px), linear-gradient(90deg, #C5A059 1px, transparent 1px)`, 
+             backgroundSize: '100px 100px' 
+           }} 
+      />
+
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center perspective-[1500px]">
         
-        {/* LEFT ZONE: SCROLLABLE PHONE AREA */}
-        <div className="w-1/2 h-full relative flex items-center justify-center perspective-[2000px] border-r border-white/5 bg-[radial-gradient(circle_at_center,#0a0a0a_0%,transparent_100%)]">
-          <motion.div
-            style={{ scale, rotateY, opacity, transformStyle: "preserve-3d" }}
-            className="relative w-[320px] h-[660px] md:w-[380px] md:h-[780px]"
-          >
-            {/* Chassis */}
-            <div className="absolute inset-0 bg-[#111] rounded-[54px] p-[2px] shadow-2xl ring-1 ring-white/10">
-              <div className="w-full h-full bg-black rounded-[52px] overflow-hidden relative">
-                
-                {/* Internal UI */}
-                <div className="h-full w-full bg-[#050505] pt-16 px-8">
-                  <header className="mb-10">
-                    <div className="flex items-center gap-2 mb-4">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-                      <span className="text-[9px] font-mono tracking-[0.4em] text-zinc-500 uppercase">Input_Sequence</span>
-                    </div>
-                    <h2 className="text-3xl font-black italic tracking-tighter uppercase leading-none">Initialize<br/>Link.</h2>
-                  </header>
+        {/* BG ACCENT TEXT */}
+        <motion.div 
+          style={{ x: useTransform(smoothProgress, [0, 1], [200, -1200]) }}
+          className="absolute top-20 left-0 whitespace-nowrap text-[20vh] font-black text-white/[0.03] select-none uppercase"
+        >
+          CONNECT WITH ME — LET'S CREATE TOGETHER — REACH OUT ANYTIME —
+        </motion.div>
 
-                  <div className="space-y-3">
-                    <SystemField placeholder="Operator_ID" icon={<Icons.User />} />
-                    <SystemField placeholder="Return_Channel" icon={<Icons.Mail />} />
-                    <textarea 
-                      placeholder="Enter transmission..."
-                      className="w-full bg-white/[0.03] border border-white/5 rounded-[28px] p-6 text-xs text-white focus:bg-white/[0.06] focus:border-blue-500/30 outline-none min-h-[200px] resize-none transition-all placeholder:text-zinc-800 font-mono"
-                    />
-                    <motion.button
-                      whileTap={{ scale: 0.95 }}
-                      className="w-full bg-blue-600 text-white py-5 rounded-full font-black text-[10px] tracking-[0.3em] uppercase flex items-center justify-center gap-3 shadow-[0_15px_30px_-10px_rgba(37,99,235,0.5)] transition-all hover:bg-white hover:text-black"
-                    >
-                      SEND_PACKET <Icons.ArrowUp />
-                    </motion.button>
-                  </div>
-                </div>
-
-                {/* Dynamic Island */}
-                <div className="absolute top-4 left-1/2 -translate-x-1/2 w-[110px] h-[32px] bg-black rounded-full z-50 border border-white/5" />
-              </div>
+        {/* THE DEVICE: iPhone 17 Pro Max Simulation */}
+        <motion.div
+          style={{ rotateX, rotateY, scale, x: phoneX }}
+          className="relative z-20 w-[360px] h-[780px] bg-[#1a1a1a] rounded-[55px] p-[2px] shadow-[0px_50px_100px_rgba(0,0,0,0.8)] border border-white/10"
+        >
+          {/* Inner Bezel (Ultra Thin) */}
+          <div className="relative w-full h-full bg-[#fafafa] rounded-[52px] overflow-hidden flex flex-col border-[4px] border-[#0a0a0a]">
+            
+            {/* DYNAMIC ISLAND */}
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 w-28 h-7 bg-black rounded-full z-50 flex items-center justify-center">
+                <div className="w-2 h-2 rounded-full bg-blue-500/20 ml-auto mr-4" />
             </div>
-          </motion.div>
-        </div>
 
-        {/* RIGHT ZONE: FIXED SOCIAL TERMINAL (NO SCROLL) */}
-        <div className="w-1/2 h-full hidden lg:flex flex-col justify-center items-center gap-4 bg-[#030303] p-12">
-           <div className="absolute top-12 right-12 text-right opacity-20">
-             <p className="text-[10px] font-mono tracking-widest uppercase">System_Link_Static</p>
-             <p className="text-[10px] font-mono text-blue-500 uppercase">Muhammed_Nawaf</p>
-           </div>
-
-           <div className="w-full max-w-sm space-y-3">
-             {SOCIAL_NODES.map((node) => (
-                <FixedLinkCard key={node.id} node={node} />
-             ))}
-           </div>
-
-           <div className="absolute bottom-12 right-12 opacity-10 grayscale pointer-events-none">
-              <div className="w-40 h-40 border border-white/20 rounded-full flex items-center justify-center animate-spin-slow">
-                <div className="w-32 h-32 border-t border-white/40 rounded-full" />
+            {/* SCREEN HEADER */}
+            <div className="pt-16 pb-8 px-8 bg-white">
+              <div className="flex justify-between items-center mb-10">
+                <div className="text-[10px] font-bold tracking-tighter text-black/30">12:00 PM</div>
+                <div className="text-[10px] font-bold tracking-tighter text-black/30 italic">5G ULTRA</div>
               </div>
-           </div>
-        </div>
+              <h2 className="text-5xl font-black tracking-tighter text-black">
+                STAY <span className="text-[#C5A059]">GOLD.</span>
+              </h2>
+            </div>
+
+            {/* SOCIAL LINKS STACK */}
+            <div className="flex-1 px-5 space-y-3">
+              {SOCIAL_LINKS.map((link, i) => {
+                const y = useTransform(smoothProgress, [0.1 + (i * 0.08), 0.35 + (i * 0.08)], [400, 0]);
+                const opacity = useTransform(smoothProgress, [0.1 + (i * 0.08), 0.3 + (i * 0.08)], [0, 1]);
+                
+                return (
+                  <motion.a
+                    key={link.id}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ y, opacity, background: link.grad }}
+                    className="block h-[72px] rounded-[24px] p-[1px] shadow-lg group hover:scale-[1.03] transition-transform duration-300"
+                  >
+                    <div className="w-full h-full bg-black/5 group-hover:bg-transparent rounded-[23px] flex items-center justify-between px-6">
+                      <span className="text-white font-black text-xs tracking-[0.2em]">{link.title}</span>
+                      <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white text-lg">
+                        ↗
+                      </div>
+                    </div>
+                  </motion.a>
+                );
+              })}
+            </div>
+
+            {/* ACTION FOOTER */}
+            <motion.div 
+              style={{ y: useTransform(smoothProgress, [0.55, 0.7], [200, 0]) }}
+              className="p-6 bg-[#00446A] border-t border-white/10"
+            >
+              <button className="w-full py-4 bg-white text-[#00446A] rounded-2xl font-black text-sm tracking-widest uppercase hover:bg-[#C5A059] hover:text-white transition-colors">
+                Contact Protocol
+              </button>
+            </motion.div>
+          </div>
+        </motion.div>
+
+        {/* OVERLAY FORM REVEAL */}
+        <motion.div 
+          style={{ 
+            opacity: useTransform(smoothProgress, [0.8, 0.95], [0, 1]),
+            x: useTransform(smoothProgress, [0.85, 1], [200, 0])
+          }}
+          className="absolute right-[10%] max-w-xl w-full p-12 bg-white rounded-[30px] shadow-[0px_50px_100px_rgba(0,0,0,0.2)] border-b-[12px] border-[#C5A059]"
+        >
+          <div className="text-[#00446A] font-black text-xs tracking-[0.4em] mb-4 uppercase">Direct Line</div>
+          <h3 className="text-7xl font-black mb-10 tracking-tighter text-black uppercase">Let's <span className="text-[#C5A059] italic">Talk</span></h3>
+          
+          <div className="space-y-8">
+            <div className="border-b-2 border-black/5 focus-within:border-[#C5A059] transition-colors pb-2">
+              <input className="w-full bg-transparent text-2xl font-bold outline-none placeholder:text-black/10" placeholder="IDENTITY" />
+            </div>
+            <div className="border-b-2 border-black/5 focus-within:border-[#C5A059] transition-colors pb-2">
+              <input className="w-full bg-transparent text-2xl font-bold outline-none placeholder:text-black/10" placeholder="EMAIL_ADDR" />
+            </div>
+            <div className="border-b-2 border-black/5 focus-within:border-[#C5A059] transition-colors pb-2">
+              <textarea className="w-full bg-transparent text-2xl font-bold outline-none h-24 resize-none placeholder:text-black/10" placeholder="ENVELOPE_DATA" />
+            </div>
+            
+            <button className="w-full py-6 bg-black text-white font-black text-xl hover:bg-[#00446A] transition-all rounded-2xl uppercase tracking-tighter">
+              Transmit Information
+            </button>
+          </div>
+        </motion.div>
 
       </div>
-
-      {/* BACKGROUND GRID (Only on left side) */}
-      <div className="fixed top-0 left-0 w-1/2 h-full pointer-events-none opacity-20 z-0">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px]" />
-      </div>
-
     </div>
   );
 };
 
-// --- SUB-COMPONENTS ---
-
-interface SystemFieldProps {
-  placeholder: string;
-  icon: React.ReactNode;
-}
-
-const SystemField = ({ placeholder, icon }: SystemFieldProps) => (
-  <div className="relative group">
-    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-700 group-focus-within:text-blue-500 transition-colors">
-      {icon}
-    </div>
-    <input 
-      type="text" 
-      placeholder={placeholder}
-      className="w-full bg-white/[0.03] border border-white/5 rounded-full py-5 pl-14 pr-8 text-xs text-white focus:bg-white/[0.06] focus:border-blue-500/20 outline-none transition-all placeholder:text-zinc-800 font-medium"
-    />
-  </div>
-);
-
-interface FixedLinkCardProps {
-  node: SocialNode;
-}
-
-const FixedLinkCard = ({ node }: FixedLinkCardProps) => (
-  <motion.div 
-    whileHover={{ x: 10, backgroundColor: "rgba(255,255,255,0.05)" }}
-    className="group flex items-center justify-between p-6 bg-white/[0.02] border border-white/5 rounded-[32px] cursor-pointer transition-all relative overflow-hidden"
-  >
-    {/* Heartbeat Background Glow */}
-    <motion.div 
-      animate={{ opacity: [0.1, 0.3, 0.1] }}
-      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.02] to-transparent" 
-    />
-    
-    <div className="flex items-center gap-5 relative z-10">
-      <div 
-        className="w-12 h-12 rounded-2xl bg-black border border-white/10 flex items-center justify-center text-zinc-600 group-hover:text-white transition-all shadow-inner"
-        style={{ color: node.color }}
-      >
-        <Icons.Zap />
-      </div>
-      <div>
-        <p className="text-[12px] font-black text-white tracking-widest uppercase mb-1 leading-none group-hover:text-blue-400 transition-colors">{node.label}</p>
-        <p className="text-[10px] font-mono text-zinc-600 tracking-tighter uppercase">{node.sub}</p>
-      </div>
-    </div>
-
-    <div className="flex items-center gap-3 relative z-10">
-       <div 
-         className="w-1.5 h-1.5 rounded-full shadow-lg" 
-         style={{ backgroundColor: node.color, boxShadow: `0 0 10px ${node.color}` }}
-       />
-    </div>
-  </motion.div>
-);
-
-export default IPhoneCinematicContact;
+export default iPhone17ProMaxSocial;

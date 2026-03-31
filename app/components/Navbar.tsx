@@ -41,22 +41,9 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className="fixed top-0 left-0 w-full z-[100] px-6 py-8 pointer-events-none"
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between pointer-events-auto">
+      <div className="max-w-7xl mx-auto flex items-center justify-center pointer-events-auto">
         {/* --- BRAND LOGO --- */}
-        <Link href="/" className="group flex items-center gap-3">
-          <div className="h-10 w-10 bg-white flex items-center justify-center rounded-full overflow-hidden transition-transform group-hover:scale-110">
-            <span className="text-black font-black text-xs italic">IQ</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-white text-[10px] font-black uppercase tracking-[0.3em] leading-none">
-              Shafi Shoukath
-            </span>
-            <span className="text-emerald-500 text-[8px] font-bold uppercase tracking-widest mt-1">
-              Creative_Architect
-            </span>
-          </div>
-        </Link>
-
+       
         {/* --- CENTRAL LINKS --- */}
         <div className="hidden md:flex items-center gap-2 bg-black/20 backdrop-blur-3xl border border-white/10 p-1.5 rounded-full">
           {NAV_LINKS.map((link) => (
@@ -82,12 +69,7 @@ export default function Navbar() {
         </div>
 
         {/* --- CTA BUTTON --- */}
-        <Link
-          href="/contact"
-          className="bg-emerald-500 hover:bg-white text-black px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-lg shadow-emerald-500/20"
-        >
-          Connect
-        </Link>
+       
       </div>
     </motion.nav>
   );
