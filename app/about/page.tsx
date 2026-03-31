@@ -28,7 +28,7 @@ const WarpArchive = () => {
   });
 
   const xTranslate = useTransform(smoothProgress, [0, 1], ["0%", "-83.33%"]);
-  
+
   const dossier = [
     {
       id: "01",
@@ -100,23 +100,6 @@ const WarpArchive = () => {
       ref={containerRef}
       className="relative h-[200vh] bg-[#050505] text-white font-sans selection:bg-[#D4AF37] selection:text-black overflow-clip"
     >
-      {/* 1. PROGRESS HUD (TECHNICAL BARS) */}
-      <div className="fixed top-12 left-1/2 -translate-x-1/2 z-[100] flex items-end gap-3 h-8">
-        {dossier.map((_, i) => (
-          <motion.div
-            key={i}
-            animate={{
-              height: index === i ? "100%" : "20%",
-              backgroundColor:
-                index === i ? "#D4AF37" : "rgba(255,255,255,0.1)",
-              opacity: index === i ? 1 : 0.3,
-            }}
-            transition={{ type: "spring", stiffness: 100, damping: 20 }}
-            className="w-[2px] rounded-full"
-          />
-        ))}
-      </div>
-
       {/* 2. THE IMAGE PORTAL */}
       <div className="fixed inset-0 flex flex-col items-center justify-center z-40 pointer-events-none">
         <div className="relative w-[85vw] md:w-[45vw] aspect-[16/10] overflow-hidden rounded-sm bg-zinc-900">
