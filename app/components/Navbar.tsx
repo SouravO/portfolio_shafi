@@ -9,9 +9,11 @@ const NAV_LINKS = [
   { name: "Home", path: "/" },
   { name: "About", path: "/about" },
   { name: "Projects", path: "/projects" },
+  { name: "Gallery", path: "/gallery" },
   { name: "Store", path: "/store" },
   { name: "Blog", path: "/blog" },
   { name: "Contact", path: "/media" },
+
 ];
 
 export default function Navbar() {
