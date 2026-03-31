@@ -82,6 +82,175 @@ function QuoteRevealSection() {
   );
 }
 
+// --- COMPONENT: VISION MISSION SECTION ---
+function VisionMissionSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.2], [50, 0]);
+
+  return (
+    <section ref={sectionRef} className="relative bg-white py-40 overflow-hidden border-b border-zinc-100">
+      <div className="max-w-7xl mx-auto px-10">
+        <motion.div style={{ opacity, y }} className="grid grid-cols-1 lg:grid-cols-12 gap-20">
+          
+          {/* Left Column: The Problem */}
+          <div className="lg:col-span-5 space-y-12">
+            <span className="text-[10px] font-black text-[#D4AF37] uppercase tracking-[1em] block">Diagnostic_Report</span>
+            <h3 className="text-5xl md:text-6xl font-black uppercase tracking-tighter leading-[0.9]">
+              Most economies <br /> <span className="italic text-zinc-300">do not struggle</span> <br /> from lack of talent.
+            </h3>
+            <p className="text-2xl font-light text-zinc-500 leading-relaxed border-l-2 border-black pl-8">
+              They struggle because of <span className="text-black font-bold">lack of structure.</span>
+            </p>
+            
+            <div className="flex flex-wrap gap-4 mt-20">
+              {["ENTREPRENEURS", "IDEAS", "CAPITAL"].map((item) => (
+                <div key={item} className="px-6 py-2 border border-zinc-200 text-[10px] font-black tracking-widest text-zinc-400">
+                  {item}_EXIST
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Column: The Vision */}
+          <div className="lg:col-span-7 flex flex-col justify-center">
+            <div className="relative p-12 bg-zinc-50 border border-zinc-100">
+              <div className="absolute -top-4 -left-4 w-12 h-12 border-t-4 border-l-4 border-[#2C518A]" />
+              <p className="text-3xl md:text-4xl font-medium leading-snug text-zinc-800 mb-12">
+                "Without a system that connects them efficiently, growth remains <span className="italic">fragmented</span>."
+              </p>
+              <h4 className="text-lg font-black uppercase tracking-[0.5em] text-[#2C518A] mb-6">Mission_Statement</h4>
+              <p className="text-xl text-zinc-600 leading-relaxed max-w-xl">
+                To design and build integrated ecosystems where entrepreneurs, startups, investors, and governments operate in <span className="text-black font-bold">alignment</span> — enabling exponential growth instead of isolated success.
+              </p>
+            </div>
+          </div>
+
+        </motion.div>
+      </div>
+      
+      {/* Background visual detail */}
+      <div className="absolute right-0 bottom-0 opacity-[0.02] translate-x-1/4 translate-y-1/4 pointer-events-none">
+        <h2 className="text-[40vw] font-black leading-none uppercase italic">System</h2>
+      </div>
+    </section>
+  );
+}
+
+// --- COMPONENT: CORE BELIEFS SECTION (STICKY REVEAL) ---
+function CoreBeliefsSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end end"],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
+  const beliefs = [
+    { title: "Design over Accident", content: "Growth is not accidental. It is designed." },
+    { title: "Infrastructure First", content: "Innovation requires infrastructure, not just ideas." },
+    { title: "Ecosystem Synergy", content: "Entrepreneurs thrive in ecosystems, not in isolation." },
+    { title: "Systemic Impact", content: "Long-term impact is built through systems, not short-term execution." }
+  ];
+
+  return (
+    <section ref={containerRef} className="relative h-[500vh] bg-black">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+        
+        {/* Background Visual: Rotating Logic Grid */}
+        <motion.div 
+          style={{ 
+            rotate: useTransform(smoothProgress, [0, 1], [0, 90]),
+            opacity: useTransform(smoothProgress, [0, 0.2, 0.8, 1], [0, 0.05, 0.05, 0])
+          }}
+          className="absolute inset-0 pointer-events-none"
+          style={{ backgroundImage: 'linear-gradient(#D4AF37 1px, transparent 1px), linear-gradient(90deg, #D4AF37 1px, transparent 1px)', backgroundSize: '100px 100px' }}
+        />
+
+        <div className="relative z-10 w-full max-w-5xl px-10">
+          <div className="mb-20">
+            <span className="text-[10px] font-black text-[#D4AF37] uppercase tracking-[1em] block mb-4">Foundation_Principles</span>
+            <h3 className="text-5xl md:text-7xl font-black uppercase text-white tracking-tighter italic">Core Beliefs</h3>
+          </div>
+
+          <div className="relative h-[400px]">
+            {beliefs.map((belief, i) => {
+              const start = i * 0.2;
+              const end = start + 0.2;
+              
+              // Animation values for each card
+              const opacity = useTransform(smoothProgress, [start, start + 0.05, end - 0.05, end], [0, 1, 1, 0]);
+              const scale = useTransform(smoothProgress, [start, start + 0.1, end], [0.8, 1, 1.2]);
+              const rotateX = useTransform(smoothProgress, [start, end], [45, -45]);
+              const y = useTransform(smoothProgress, [start, end], [100, -100]);
+
+              return (
+                <motion.div
+                  key={i}
+                  style={{ opacity, scale, rotateX, y, perspective: "1000px" }}
+                  className="absolute inset-0 flex flex-col justify-center"
+                >
+                  <div className="border-l-4 border-[#D4AF37] pl-8 md:pl-16">
+                    <span className="text-[#D4AF37] font-mono text-sm tracking-[0.5em] block mb-6">NODE_0{i + 1}</span>
+                    <h4 className="text-5xl md:text-8xl font-black uppercase text-white tracking-tighter leading-none mb-8">
+                      {belief.title}
+                    </h4>
+                    <p className="text-2xl md:text-4xl font-light text-zinc-500 italic max-w-2xl">
+                      {belief.content}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Closing statement reveal at the very end */}
+        <motion.div 
+          style={{ 
+            opacity: useTransform(smoothProgress, [0.85, 0.95], [0, 1]),
+            scale: useTransform(smoothProgress, [0.85, 0.95], [0.95, 1])
+          }}
+          className="absolute inset-0 flex flex-col items-center justify-center bg-black px-10 text-center z-20"
+        >
+          <div className="max-w-4xl space-y-12">
+            <div className="h-px w-20 bg-[#D4AF37] mx-auto opacity-50" />
+            <h3 className="text-4xl md:text-6xl font-light italic leading-tight text-zinc-300">
+              "The goal is not to build individual success stories. <br />
+              The goal is to create environments where <span className="text-white font-black not-italic underline decoration-[#D4AF37] underline-offset-8">success becomes repeatable.</span>"
+            </h3>
+            <span className="text-[10px] font-black text-[#D4AF37] uppercase tracking-[1em] block">End_of_Foundation</span>
+          </div>
+        </motion.div>
+
+        {/* Scroll Progress HUD */}
+        <div className="absolute right-10 top-1/2 -translate-y-1/2 flex flex-col gap-4">
+          {beliefs.map((_, i) => (
+            <motion.div 
+              key={i}
+              style={{ 
+                height: useTransform(smoothProgress, [i * 0.2, (i + 1) * 0.2], [8, 40]),
+                backgroundColor: useTransform(smoothProgress, [i * 0.2, (i + 1) * 0.2], ["rgba(255,255,255,0.1)", "#D4AF37"])
+              }}
+              className="w-[2px] rounded-full"
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function GalleryCutHome() {
   const containerRef = useRef<HTMLDivElement>(null);
   const pillarIcons = [Cpu, Globe, Layers, Zap];
@@ -176,6 +345,9 @@ export default function GalleryCutHome() {
         </div>
       </section>
 
+      {/* --- VISION & MISSION --- */}
+      <VisionMissionSection />
+
       {/* --- QUOTE REVEAL SECTION (FIXED TIMING) --- */}
       <QuoteRevealSection />
 
@@ -228,63 +400,9 @@ export default function GalleryCutHome() {
         </div>
       </section>
 
-      {/* --- ARCHIVE SECTION --- */}
-      <section className="relative z-40 bg-white px-4 sm:px-6 lg:px-12 xl:px-24 py-20 sm:py-32 md:py-40">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-start border-b-[3px] sm:border-b-[6px] border-black pb-8 sm:pb-12 md:pb-16 mb-16 sm:mb-24 md:mb-32">
-            <div>
-              <p className="text-[8px] sm:text-[10px] font-black text-[#2C518A] tracking-[1.5em] uppercase mb-2 sm:mb-4">Core_Portfolio_01</p>
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-[14rem] font-black uppercase tracking-tighter leading-[0.75]">ARCHIVE<span className="text-[#D4AF37]">.</span></h2>
-            </div>
-            <div className="mt-4 sm:mt-6 md:mt-8 text-left md:text-right space-y-1">
-              <p className="text-[8px] sm:text-[10px] font-black uppercase">BENGALURU_IND</p>
-              <p className="text-3xl sm:text-4xl md:text-5xl font-thin tracking-tighter">2026©</p>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 xl:gap-24">
-            <div className="lg:col-span-5 space-y-12 sm:space-y-16 md:space-y-24">
-              <div className="group relative">
-                <div className="absolute -left-4 sm:-left-8 top-0 h-full w-[2px] bg-[#D4AF37] scale-y-0 group-hover:scale-y-100 transition-transform duration-700 origin-top" />
-                <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light leading-none mb-4 sm:mb-6 md:mb-8 italic uppercase">The <span className="font-black not-italic block mt-1 sm:mt-2 text-[#2C518A]">Bespoke Logic</span> System</h3>
-                <p className="text-zinc-500 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed font-medium">Designing at the intersection of violent aesthetics and surgical performance.</p>
-              </div>
-            </div>
-            <div className="lg:col-span-7 relative">
-              <div className="bg-zinc-50 p-6 sm:p-8 md:p-12 lg:p-16 xl:p-20 group min-h-[300px] sm:min-h-[400px] md:min-h-[500px] flex flex-col justify-end">
-                <motion.div whileHover={{ x: 10 }} className="relative z-10 space-y-3 sm:space-y-4 md:space-y-6">
-                  <span className="inline-block px-2 sm:px-3 md:px-4 py-1 bg-black text-[#D4AF37] text-[8px] sm:text-[10px] font-black uppercase">Featured_Module</span>
-                  <h4 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black uppercase tracking-tighter leading-none">Ecosystem Architecture</h4>
-                  <div className="pt-4 sm:pt-6 md:pt-8 flex items-center gap-3 sm:gap-4 md:gap-6">
-                    <button className="h-12 sm:h-14 md:h-16 w-12 sm:w-14 md:w-16 rounded-full border-2 border-black flex items-center justify-center group-hover:bg-black transition-colors">
-                      <span className="text-lg sm:text-xl group-hover:text-white">→</span>
-                    </button>
-                    <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.5em]">View Project Detail</span>
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* --- FOOTER --- */}
-      <footer className="relative z-40 bg-black text-white h-screen flex flex-col items-center justify-center px-4 sm:px-6 md:px-10 overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[#2C518A]/20 blur-[120px] sm:blur-[180px] pointer-events-none" />
-        <div className="relative z-10 text-center flex flex-col items-center max-w-4xl px-4">
-          <span className="text-[8px] sm:text-[10px] font-black tracking-[1em] sm:tracking-[2em] uppercase text-[#D4AF37] mb-6 sm:mb-8 md:mb-12 block ml-[1em] sm:ml-[2em]">Final_Statement</span>
-          <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-light italic mb-8 sm:mb-12 md:mb-16 leading-tight">
-            "The future belongs to those who don't <span className="font-black not-italic text-[#D4AF37]">participate</span> in systems — but <span className="font-black not-italic text-[#2C518A]">build</span> them."
-          </h3>
-          <button className="group relative px-12 sm:px-16 md:px-24 py-4 sm:py-6 md:py-8 border border-white/20 hover:border-[#D4AF37] transition-all duration-700">
-            <div className="absolute inset-0 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-            <span className="relative z-10 text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] sm:tracking-[0.5em] group-hover:text-black">Establish_Connection_</span>
-          </button>
-        </div>
-        <div className="absolute bottom-6 sm:bottom-8 md:bottom-12 w-full px-6 sm:px-8 md:px-12 flex justify-between items-end opacity-40 text-[6px] sm:text-[8px] font-mono uppercase">
-          <div>System: Liquid Brutalism v4.0 <br /> Loc: 12.97°N, 77.59°E</div>
-          <div className="text-right">©2026 SHAFI_SHOUKATH <br /> ALL_RIGHTS_RESERVED</div>
-        </div>
-      </footer>
+      {/* --- CORE BELIEFS --- */}
+      <CoreBeliefsSection />
+the 
     </main>
   );
 }
