@@ -130,7 +130,7 @@ export default function CinematicBookExperience() {
                   </div>
                   
                   <div>
-                    <h2 className="text-5xl md:text-6xl font-serif tracking-tighter mb-2">BHĀRAT</h2>
+                    <h2 className="text-5xl md:text-6xl font-serif tracking-tighter mb-2">India Is A Developed Country</h2>
                     <p className="text-[9px] tracking-[0.4em] uppercase text-zinc-500">The Visual Archive</p>
                   </div>
                 </div>
