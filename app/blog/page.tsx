@@ -6,7 +6,7 @@ import { ArrowUpRight, X, Clock, Zap, ChevronRight, Filter, Search } from 'lucid
 
 const CATEGORIES = ["ALL", "DESIGN", "TECH", "ECO", "CULTURE", "SPORTS"];
 
-const BLOG_POSTS = [
+const BLOG_POSTS: BlogPost[] = [
   { id: 1, title: "The Death of Flat Design", excerpt: "Why the industry is returning to tactile, high-contrast aesthetics.", content: "Flat design dominated for a decade, but the pendulum is swinging back. We are seeing a rise in Neo-Brutalism—a style that embraces raw honesty, visible grids, and 'ugly' but functional UI...", category: "DESIGN", color: "#2C518A", readTime: "5 min" },
   { id: 2, title: "Scroll as a Storyteller", excerpt: "Moving beyond verticality: how to map scroll progress to 3D transformations.", content: "Scroll-jacking used to be a sin. Now, with libraries like Framer Motion and Three.js, it's an art form. By mapping the 'scrollY' value to rotation, scale, or shaders...", category: "TECH", color: "#FF5E00", readTime: "8 min" },
   { id: 3, title: "AI Styling & Circular Fashion", excerpt: "The intersection of algorithmic curation and sustainable recycling.", content: "The future of fashion isn't new clothes—it's the intelligent redistribution of old ones. AI-driven styling engines can now scan a user's measurements...", category: "ECO", color: "#00E5FF", readTime: "6 min" },
@@ -14,8 +14,18 @@ const BLOG_POSTS = [
   { id: 5, title: "Grassroots Football Tech", excerpt: "Using data to scout the next generation of legends in underserved regions.", content: "Talent is everywhere, but opportunity is not. New platforms are allowing young athletes in remote areas to upload their performance data directly to databases...", category: "SPORTS", color: "#00FF41", readTime: "7 min" }
 ];
 
+interface BlogPost {
+  id: number;
+  title: string;
+  excerpt: string;
+  content: string;
+  category: string;
+  color: string;
+  readTime: string;
+}
+
 export default function EliteBlogPage() {
-  const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [filter, setFilter] = useState("ALL");
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   
