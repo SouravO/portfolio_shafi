@@ -115,12 +115,12 @@ export default function HorizontalWowBlog() {
       <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
         
         {/* --- CATEGORY NAV --- */}
-        <div className="absolute top-45 left-10 z-50 flex gap-4 bg-white/5 backdrop-blur-xl p-2 rounded-full border border-white/10">
+        <div className="absolute top-8 sm:top-12 md:top-16 lg:top-20 xl:top-24 left-4 sm:left-6 md:left-8 lg:left-10 z-50 flex gap-2 sm:gap-4 bg-white/5 backdrop-blur-xl p-1 sm:p-2 rounded-full border border-white/10 overflow-x-auto">
           {CATEGORIES.map(cat => (
             <button
               key={cat}
               onClick={() => setActiveTab(cat)}
-              className={`px-6 py-2 rounded-full text-xs font-bold tracking-widest transition-all ${
+              className={`px-3 sm:px-4 md:px-6 py-1 sm:py-2 rounded-full text-[10px] sm:text-xs font-bold tracking-widest transition-all whitespace-nowrap ${
                 activeTab === cat ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-white'
               }`}
             >
@@ -134,32 +134,32 @@ export default function HorizontalWowBlog() {
           style={{ x: smoothBgX }}
           className="absolute inset-0 flex items-center whitespace-nowrap z-0 select-none pointer-events-none"
         >
-          <span className="text-[25vh] font-black text-white/[0.02] leading-none">
+          <span className="text-[15vh] sm:text-[20vh] md:text-[25vh] font-black text-white/[0.02] leading-none">
             EXPLORE {activeTab.toUpperCase()} INSIGHTS — ARCHIVE 2026 — 
           </span>
         </motion.div>
 
         {/* Horizontal Content Grid */}
-        <motion.div style={{ x: smoothX }} className="flex gap-20 px-[10vw] z-10 items-center">
+        <motion.div style={{ x: smoothX }} className="flex gap-8 sm:gap-12 md:gap-16 lg:gap-20 px-4 sm:px-6 md:px-8 lg:px-[10vw] z-10 items-center">
           
-          <div className="w-[30vw] shrink-0">
+          <div className="w-[80vw] sm:w-[60vw] md:w-[40vw] lg:w-[30vw] shrink-0">
             <motion.div 
                key={activeTab}
                initial={{ opacity: 0, y: 20 }}
                animate={{ opacity: 1, y: 0 }}
-               className="border-l-2 border-purple-500 pl-8"
+               className="border-l-2 border-purple-500 pl-4 sm:pl-6 md:pl-8"
             >
-              <h1 className="text-6xl font-black tracking-tighter text-white mb-4 leading-none">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter text-white mb-2 sm:mb-4 leading-none">
                 {activeTab === 'All' ? 'THE' : activeTab}<br/>
                 <span className="text-purple-500 font-outline-2">JOURNAL</span>
               </h1>
-              <p className="text-gray-500 text-sm font-mono tracking-tighter">
+              <p className="text-gray-500 text-xs sm:text-sm font-mono tracking-tighter">
                 FILTERED BY: {activeTab.toUpperCase()}
               </p>
             </motion.div>
           </div>
 
-          <div className="flex gap-16">
+          <div className="flex gap-6 sm:gap-8 md:gap-12 lg:gap-16">
             <AnimatePresence mode="popLayout">
               {filteredBlogs.map((post) => (
                 <motion.div 
@@ -169,9 +169,9 @@ export default function HorizontalWowBlog() {
                   animate={{ opacity: 1, scale: 1, x: 0 }}
                   exit={{ opacity: 0, scale: 0.8, x: -50 }}
                   transition={{ duration: 0.5, ease: "circOut" }}
-                  className="relative group w-[70vw] md:w-[30vw] h-[55vh] shrink-0"
+                  className="relative group w-[85vw] sm:w-[70vw] md:w-[50vw] lg:w-[35vw] xl:w-[30vw] h-[50vh] sm:h-[55vh] shrink-0"
                 >
-                  <div className="relative w-full h-full overflow-hidden rounded-[2rem] border border-white/10 bg-[#111]">
+                  <div className="relative w-full h-full overflow-hidden rounded-[1rem] sm:rounded-[2rem] border border-white/10 bg-[#111]">
                     <motion.img 
                       whileHover={{ scale: 1.05 }}
                       src={post.img} 
@@ -179,25 +179,25 @@ export default function HorizontalWowBlog() {
                       alt={post.title}
                     />
                     
-                    <div className="absolute inset-0 p-8 flex flex-col justify-between">
+                    <div className="absolute inset-0 p-4 sm:p-6 md:p-8 flex flex-col justify-between">
                       <div className="flex justify-between items-center">
-                        <span className="text-sm font-mono text-purple-400 bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20">
+                        <span className="text-xs sm:text-sm font-mono text-purple-400 bg-purple-500/10 px-2 sm:px-3 py-1 rounded-full border border-purple-500/20">
                           {post.cat}
                         </span>
                         <button 
                           onClick={() => setExpandedPost(post.id)}
-                          className="p-2 rounded-full bg-black/50 backdrop-blur-md border border-white/10 hover:bg-purple-600 hover:border-purple-500 transition-all"
+                          className="p-1 sm:p-2 rounded-full bg-black/50 backdrop-blur-md border border-white/10 hover:bg-purple-600 hover:border-purple-500 transition-all"
                         >
-                          <ExternalLink className="text-white w-4 h-4" />
+                          <ExternalLink className="text-white w-3 h-3 sm:w-4 sm:h-4" />
                         </button>
                       </div>
 
                       <div>
-                        <h2 className="text-3xl font-bold text-white tracking-tighter mb-2 group-hover:text-purple-300 transition-colors">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tighter mb-1 sm:mb-2 group-hover:text-purple-300 transition-colors">
                           {post.title}
                         </h2>
-                        <button className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 group-hover:text-white transition-all">
-                          View Case Study <ArrowRight size={12} />
+                        <button className="flex items-center gap-1 sm:gap-2 text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 group-hover:text-white transition-all">
+                          View Case Study <ArrowRight size={10} className="sm:w-3 sm:h-3" />
                         </button>
                       </div>
                     </div>
@@ -207,8 +207,8 @@ export default function HorizontalWowBlog() {
             </AnimatePresence>
           </div>
 
-          <div className="w-[20vw] shrink-0 flex items-center justify-center">
-             <Globe className="w-12 h-12 text-white/10" />
+          <div className="w-[20vw] shrink-0 flex items-center justify-center hidden lg:flex">
+             <Globe className="w-8 sm:w-12 h-8 sm:h-12 text-white/10" />
           </div>
         </motion.div>
       </div>
@@ -221,43 +221,43 @@ export default function HorizontalWowBlog() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setExpandedPost(null)}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-6"
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 sm:p-6"
           >
             <motion.div 
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-4xl w-full bg-[#0a0a0a] border border-purple-500/30 rounded-2xl overflow-hidden"
+              className="relative max-w-4xl w-full bg-[#0a0a0a] border border-purple-500/30 rounded-xl sm:rounded-2xl overflow-hidden"
             >
               <button 
                 onClick={() => setExpandedPost(null)}
-                className="absolute top-6 right-6 z-10 p-2 bg-black/50 hover:bg-purple-600 rounded-full transition-all"
+                className="absolute top-4 sm:top-6 right-4 sm:right-6 z-10 p-1 sm:p-2 bg-black/50 hover:bg-purple-600 rounded-full transition-all"
               >
-                <ExternalLink className="w-5 h-5 text-white rotate-45" />
+                <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-white rotate-45" />
               </button>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 md:p-12">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 p-6 sm:p-8 md:p-12">
                 <motion.img 
                   src={BLOGS.find(b => b.id === expandedPost)?.img}
                   alt="Expanded"
-                  className="w-full h-96 object-cover rounded-lg"
+                  className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg"
                   initial={{ scale: 0.9 }}
                   animate={{ scale: 1 }}
                 />
                 
                 <div className="flex flex-col justify-between">
                   <div>
-                    <span className="text-purple-400 text-sm font-mono bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20">
+                    <span className="text-purple-400 text-xs sm:text-sm font-mono bg-purple-500/10 px-2 sm:px-3 py-1 rounded-full border border-purple-500/20">
                       {BLOGS.find(b => b.id === expandedPost)?.cat}
                     </span>
-                    <h2 className="text-4xl font-black text-white mt-6 mb-4 tracking-tighter">
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white mt-4 sm:mt-6 mb-3 sm:mb-4 tracking-tighter">
                       {BLOGS.find(b => b.id === expandedPost)?.title}
                     </h2>
-                    <p className="text-gray-400 text-lg leading-relaxed mb-6">
+                    <p className="text-gray-400 text-sm sm:text-base lg:text-lg leading-relaxed mb-4 sm:mb-6">
                       {BLOGS.find(b => b.id === expandedPost)?.sub}
                     </p>
-                    <p className="text-gray-500 text-base leading-relaxed">
+                    <p className="text-gray-500 text-sm sm:text-base leading-relaxed">
                       This comprehensive exploration delves into {BLOGS.find(b => b.id === expandedPost)?.title.toLowerCase()}, examining its implications for the future. Our in-depth analysis covers emerging trends, technological advancements, and practical applications that are shaping the landscape of 2026 and beyond.
                     </p>
                   </div>
@@ -270,10 +270,10 @@ export default function HorizontalWowBlog() {
 
       {/* Progress Bar */}
       <motion.div 
-        className="fixed bottom-8 left-8 right-8 h-[1px] bg-white/5 z-50 origin-left"
+        className="fixed bottom-4 sm:bottom-6 md:bottom-8 left-4 sm:left-6 md:left-8 right-4 sm:right-6 md:right-8 h-[1px] bg-white/5 z-50 origin-left"
         style={{ scaleX: scrollYProgress }}
       >
-        <div className="absolute right-0 top-[-2px] h-1 w-10 bg-purple-500 shadow-[0_0_20px_#a855f7]" />
+        <div className="absolute right-0 top-[-2px] h-1 w-6 sm:w-8 md:w-10 bg-purple-500 shadow-[0_0_20px_#a855f7]" />
       </motion.div>
     </section>
   );

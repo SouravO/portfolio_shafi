@@ -24,10 +24,10 @@ const ApertureArchive = () => {
 
   return (
     <div ref={containerRef} className="relative h-[600vh] bg-[#080808] text-white font-sans selection:bg-white selection:text-black">
-      <div className="sticky top-0 h-screen w-full flex items-center overflow-hidden px-6 md:px-20">
+      <div className="sticky top-0 h-screen w-full flex flex-col md:flex-row items-center overflow-hidden px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20">
         
         {/* LEFT: THE APERTURE (Masked Image) */}
-        <div className="relative w-full md:w-1/2 aspect-square md:aspect-[4/5] overflow-hidden group">
+        <div className="relative w-full md:w-1/2 aspect-square md:aspect-[4/5] lg:aspect-[3/4] overflow-hidden group mb-8 md:mb-0">
           {dossier.map((item, i) => {
             const start = i / dossier.length;
             const end = (i + 1) / dossier.length;
@@ -52,8 +52,8 @@ const ApertureArchive = () => {
                   className="object-cover grayscale brightness-75 contrast-125"
                 />
                 {/* HUD Overlay for image */}
-                <div className="absolute inset-0 border-[0.5px] border-white/20 m-4 flex flex-col justify-between p-4 pointer-events-none">
-                  <span className="text-[10px] font-mono opacity-40">IMG_REF_{item.id}</span>
+                <div className="absolute inset-0 border-[0.5px] border-white/20 m-2 sm:m-4 flex flex-col justify-between p-2 sm:p-4 pointer-events-none">
+                  <span className="text-[8px] sm:text-[10px] font-mono opacity-40">IMG_REF_{item.id}</span>
                   <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
                 </div>
               </motion.div>
@@ -62,7 +62,7 @@ const ApertureArchive = () => {
         </div>
 
         {/* RIGHT: THE DATAFEED (Text) */}
-        <div className="absolute md:relative right-6 md:right-0 md:w-1/2 h-full flex flex-col justify-center pl-0 md:pl-20 z-50">
+        <div className="relative md:absolute md:right-0 w-full md:w-1/2 h-full flex flex-col justify-center pl-0 md:pl-8 lg:pl-12 xl:pl-20 z-50">
           {dossier.map((item, i) => {
             const start = i / dossier.length;
             const end = (i + 1) / dossier.length;
@@ -74,24 +74,24 @@ const ApertureArchive = () => {
               <motion.div
                 key={`text-${item.id}`}
                 style={{ opacity, x, pointerEvents: "none" }}
-                className="absolute flex flex-col items-start gap-4"
+                className="absolute flex flex-col items-start gap-2 sm:gap-4"
               >
-                <div className="flex items-center gap-3">
-                  <div className="h-[1px] w-8 bg-white" />
-                  <span className="font-mono text-[11px] tracking-[0.4em] uppercase text-zinc-500">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="h-[1px] w-4 sm:w-8 bg-white" />
+                  <span className="font-mono text-[9px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.4em] uppercase text-zinc-500">
                     {item.tag}
                   </span>
                 </div>
                 
-                <h2 className="text-5xl md:text-8xl font-black tracking-[calc(-0.05em)] leading-[0.85] whitespace-pre-line uppercase">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-black tracking-[calc(-0.05em)] leading-[0.85] whitespace-pre-line uppercase">
                   {item.title}
                 </h2>
                 
-                <div className="max-w-xs space-y-4 pt-6">
-                  <p className="text-sm font-medium text-zinc-400 leading-relaxed uppercase tracking-wider">
+                <div className="max-w-xs sm:max-w-sm md:max-w-md space-y-3 sm:space-y-4 pt-4 sm:pt-6">
+                  <p className="text-xs sm:text-sm font-medium text-zinc-400 leading-relaxed uppercase tracking-wider">
                     {item.content}
                   </p>
-                  <div className="flex gap-2 text-[10px] font-mono text-zinc-600">
+                  <div className="flex gap-2 text-[8px] sm:text-[10px] font-mono text-zinc-600">
                     <span>STATUS: ACTIVE</span>
                     <span>/</span>
                     <span>LOC: GLOBAL_GRID</span>
@@ -103,8 +103,8 @@ const ApertureArchive = () => {
         </div>
 
         {/* PERIPHERAL UI (The "Glass" Frame) */}
-        <div className="fixed inset-0 border-[1rem] border-[#080808] z-[100] pointer-events-none" />
-        <div className="fixed bottom-10 left-10 text-[10px] font-mono tracking-widest text-zinc-700 z-[101]">
+        <div className="fixed inset-0 border-[0.5rem] sm:border-[1rem] border-[#080808] z-[100] pointer-events-none" />
+        <div className="fixed bottom-4 sm:bottom-6 md:bottom-8 lg:bottom-10 left-4 sm:left-6 md:left-8 lg:left-10 text-[8px] sm:text-[10px] font-mono tracking-widest text-zinc-700 z-[101]">
           ARCHIVE_SYSTEM_V.02 // {new Date().getFullYear()}
         </div>
       </div>

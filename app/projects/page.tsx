@@ -3,13 +3,20 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
-const projects = [
+interface Project {
+  id: number;
+  title: string;
+  code: string;
+  img: string;
+}
+
+const projects: Project[] = [
   { id: 1, title: "GENESIS", code: "001_A", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200" },
   { id: 2, title: "EXODUS", code: "002_B", img: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=1200" },
   { id: 3, title: "REVELATION", code: "003_C", img: "https://images.unsplash.com/photo-1633167606207-d840b5070fc2?q=80&w=1200" },
 ];
 
-const SlitSection = ({ project, index }) => {
+const SlitSection = ({ project, index }: { project: Project; index: number }) => {
   const container = useRef(null);
   const { scrollYProgress } = useScroll({
     target: container,
@@ -74,7 +81,7 @@ const SlitSection = ({ project, index }) => {
   );
 };
 
-function DataCard({ node, index }) {
+function DataCard() {
   return (
     <div className="bg-black">
       {/* Global Grain Overlay */}
