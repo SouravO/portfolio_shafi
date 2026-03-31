@@ -20,15 +20,15 @@ const WarpArchive = () => {
     offset: ["start start", "end end"],
   });
 
-  // High damping, low stiffness for that "heavy/expensive" liquid feel
+  // Tight, high-performance spring to eliminate wobble while maintaining a hint of silkiness
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 50,
-    damping: 25,
+    stiffness: 150,
+    damping: 40,
     restDelta: 0.001,
   });
 
   const xTranslate = useTransform(smoothProgress, [0, 1], ["0%", "-83.33%"]);
-
+  
   const dossier = [
     {
       id: "01",
@@ -37,7 +37,7 @@ const WarpArchive = () => {
       content:
         "Most economies struggle not from lack of talent, but from lack of structure. We architect the systems required for growth.",
       img: "/Shafi1.jpg",
-      position: "object-[center_25%]", // Adjust the % to push it further down
+      position: "object-[center_25%]",
     },
     {
       id: "02",
@@ -46,7 +46,7 @@ const WarpArchive = () => {
       content:
         "Sustainable growth happens when Entrepreneurs, Startups, and Investors align within a single governance grid.",
       img: "/shafi2.heic",
-      position: "object-[center_25%]", //
+      position: "object-[center_25%]",
     },
     {
       id: "03",
@@ -56,8 +56,6 @@ const WarpArchive = () => {
         "Talent and capital are no longer regional. We design ecosystems that connect innovation across nations.",
       img: "/shafi4.jpg",
       position: "object-center",
-
-
     },
     {
       id: "04",
@@ -66,8 +64,7 @@ const WarpArchive = () => {
       content:
         "Engaging in dialogue and sharing ideas across forums to shape the future of systemic economic growth.",
       img: "/shafi3.jpg",
-      position: "object-[center_15%]", 
-
+      position: "object-[center_15%]",
     },
     {
       id: "05",
@@ -76,8 +73,7 @@ const WarpArchive = () => {
       content:
         "Clear thinking creates clarity in action. We define the long-term strategy for infrastructure thinking and execution.",
       img: "/shafi6.jpg",
-      position: "object-[center_15%]", 
-
+      position: "object-[center_15%]",
     },
     {
       id: "06",
@@ -90,7 +86,8 @@ const WarpArchive = () => {
     },
   ];
 
-  useMotionValueEvent(smoothProgress, "change", (latest) => {
+  // Use raw scrollYProgress for immediate index updates
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
     const newIndex = Math.min(
       Math.floor(latest * dossier.length),
       dossier.length - 1,
@@ -101,10 +98,10 @@ const WarpArchive = () => {
   return (
     <div
       ref={containerRef}
-      className="relative h-[600vh] bg-[#050505] text-white font-sans selection:bg-[#D4AF37] selection:text-black overflow-clip"
+      className="relative h-[200vh] bg-[#050505] text-white font-sans selection:bg-[#D4AF37] selection:text-black overflow-clip"
     >
       {/* 1. PROGRESS HUD (TECHNICAL BARS) */}
-      {/* <div className="fixed top-12 left-1/2 -translate-x-1/2 z-[100] flex items-end gap-3 h-8">
+      <div className="fixed top-12 left-1/2 -translate-x-1/2 z-[100] flex items-end gap-3 h-8">
         {dossier.map((_, i) => (
           <motion.div
             key={i}
@@ -112,37 +109,38 @@ const WarpArchive = () => {
               height: index === i ? "100%" : "20%",
               backgroundColor:
                 index === i ? "#D4AF37" : "rgba(255,255,255,0.1)",
+              opacity: index === i ? 1 : 0.3,
             }}
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
             className="w-[2px] rounded-full"
           />
         ))}
-      </div> */}
+      </div>
 
-      {/* 2. THE IMAGE PORTAL (THE "SMOOTH" ENGINE) */}
+      {/* 2. THE IMAGE PORTAL */}
       <div className="fixed inset-0 flex flex-col items-center justify-center z-40 pointer-events-none">
-        <div className="relative w-[85vw] md:w-[45vw] aspect-[16/10] overflow-hidden rounded-sm">
+        <div className="relative w-[85vw] md:w-[45vw] aspect-[16/10] overflow-hidden rounded-sm bg-zinc-900">
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.div
               key={index}
               initial={{
                 opacity: 0,
-                scale: 1.1,
-                filter: "blur(20px) brightness(1.5)",
+                scale: 1.02,
+                filter: "blur(10px)",
               }}
               animate={{
                 opacity: 1,
                 scale: 1,
-                filter: "blur(0px) brightness(1)",
+                filter: "blur(0px)",
               }}
               exit={{
                 opacity: 0,
-                scale: 0.9,
-                filter: "blur(20px) brightness(0.5)",
+                scale: 0.98,
+                filter: "blur(10px)",
               }}
               transition={{
-                duration: 1.2,
-                ease: [0.22, 1, 0.36, 1], // Custom "Quintic" ease for silkiness
+                duration: 0.5,
+                ease: [0.16, 1, 0.3, 1],
               }}
               className="absolute inset-0 border border-white/5 shadow-2xl"
             >
@@ -157,7 +155,7 @@ const WarpArchive = () => {
           </AnimatePresence>
         </div>
 
-        {/* 3. CONTENT BOX (STAGGERED TEXT) */}
+        {/* 3. CONTENT BOX */}
         <div className="w-[85vw] md:w-[40vw] mt-12 text-center pointer-events-auto">
           <AnimatePresence mode="wait">
             <motion.div
@@ -166,11 +164,11 @@ const WarpArchive = () => {
               animate="animate"
               exit="exit"
               variants={{
-                initial: { opacity: 0, y: 30 },
+                initial: { opacity: 0, y: 15 },
                 animate: { opacity: 1, y: 0 },
-                exit: { opacity: 0, y: -30 },
+                exit: { opacity: 0, y: -15 },
               }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className="space-y-6"
             >
               <h2 className="text-5xl md:text-7xl font-serif italic tracking-tighter text-white">
@@ -179,7 +177,7 @@ const WarpArchive = () => {
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: 0.1 }}
                 className="text-xs md:text-sm font-light text-zinc-500 max-w-sm mx-auto uppercase tracking-[0.2em] leading-relaxed"
               >
                 {dossier[index].content}
@@ -190,7 +188,7 @@ const WarpArchive = () => {
       </div>
 
       {/* 4. BACKGROUND GHOST RAIL (SILKY HORIZONTAL) */}
-      <div className="sticky top-0 h-screen w-full flex items-center z-10 opacity-[0.03]">
+      <div className="sticky top-0 h-screen w-full flex items-center z-10 opacity-[0.05]">
         <motion.div style={{ x: xTranslate }} className="flex h-full w-[600%]">
           {dossier.map((item) => (
             <div

@@ -235,55 +235,7 @@ export default function GalleryCutHome() {
         </div>
       </section>
 
-      {/* --- SECTION 4: FEATURED PROJECTS (HORIZONTAL PARALLAX HINT) --- */}
-      <section className="relative z-30 bg-zinc-50 py-40">
-        <div className="max-w-[1400px] mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-20 border-b border-zinc-200 pb-10">
-            <h2 className="text-8xl font-black uppercase tracking-tighter text-[#2C518A]">
-              PROJECTS_
-            </h2>
-            <p className="text-xs font-black uppercase tracking-widest text-zinc-400 mb-4">
-              Strategic_Deployments_v4.0
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            {["Startup Park", "Incubenation", "Global Initiatives"].map(
-              (project, idx) => (
-                <motion.div
-                  key={project}
-                  initial={{ opacity: 0, scale: 0.97 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  className="relative aspect-[3/4] bg-white/30 backdrop-blur-sm border border-zinc-200 overflow-hidden group p-10 flex flex-col justify-between"
-                >
-                  <img
-                    src={`https://images.unsplash.com/photo-1${idx}?auto=format&fit=crop&w=1200&q=60`}
-                    alt={project}
-                    className="absolute inset-0 w-full h-48 object-cover opacity-90"
-                  />
-                  <div className="absolute top-0 left-0 w-full h-1 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
-                  <span className="text-[10px] font-black text-zinc-300">
-                    MOD_{idx + 10}
-                  </span>
-                  <div className="relative z-10">
-                    <h4 className="text-4xl font-black uppercase tracking-tighter mb-4">
-                      {project}
-                    </h4>
-                    <button className="text-[10px] font-black uppercase border-b-2 border-black pb-1 hover:text-[#2C518A] hover:border-[#2C518A] transition-colors flex items-center gap-2">
-                      Details_
-                      <ArrowUpRight size={14} />
-                    </button>
-                  </div>
-                  <div className="absolute bottom-[-20%] right-[-10%] text-[120px] font-black text-zinc-100 pointer-events-none group-hover:text-[#D4AF37]/10 transition-colors">
-                    0{idx + 1}
-                  </div>
-                </motion.div>
-              ),
-            )}
-          </div>
-        </div>
-      </section>
+     
 
       {/* --- ORIGINAL LAYER 3: THE ARCHIVE (MODIFIED PADDING) --- */}
       <section className="relative z-40 bg-white shadow-[0_-100px_100px_rgba(0,0,0,0.04)] px-6 lg:px-24 py-40">
