@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { Linkedin, MessageCircle, Mail } from 'lucide-react';
+import { Briefcase, Share2, Camera } from 'lucide-react';
 
 const CONTACT_CARDS = [
   { id: 1, title: "SOCIALS", content: "LinkedIn / X / Instagram", color: "#f4f4f5", text: "#18181b" },
@@ -48,7 +48,42 @@ const StackedContact = () => {
                 className="absolute inset-0 rounded-[40px] p-12 shadow-2xl flex flex-col justify-between border border-white/10"
               >
                 <span style={{ color: card.text }} className="font-mono text-sm font-bold tracking-[0.3em]">{card.title}</span>
-                <p style={{ color: card.text }} className="text-4xl font-bold leading-tight tracking-tighter">{card.content}</p>
+                {card.id === 1 ? (
+                  <div className="flex gap-4 justify-center items-center">
+                    <a 
+                      href="https://www.linkedin.com/in/shafi-shoukath/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="p-3 rounded-full border-2 hover:bg-black/10 transition-all hover:scale-110 active:scale-95"
+                      style={{ borderColor: card.text }}
+                      title="LinkedIn"
+                    >
+                      <Briefcase size={24} style={{ color: card.text }} />
+                    </a>
+                    <a 
+                      href="https://twitter.com/shafishoukath" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="p-3 rounded-full border-2 hover:bg-black/10 transition-all hover:scale-110 active:scale-95"
+                      style={{ borderColor: card.text }}
+                      title="X / Twitter"
+                    >
+                      <Share2 size={24} style={{ color: card.text }} />
+                    </a>
+                    <a 
+                      href="https://www.instagram.com/shafishoukath?igsh=MTJsNGpjdXF0YTFmMg==" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="p-3 rounded-full border-2 hover:bg-black/10 transition-all hover:scale-110 active:scale-95"
+                      style={{ borderColor: card.text }}
+                      title="Instagram"
+                    >
+                      <Camera size={24} style={{ color: card.text }} />
+                    </a>
+                  </div>
+                ) : (
+                  <p style={{ color: card.text }} className="text-4xl font-bold leading-tight tracking-tighter">{card.content}</p>
+                )}
               </motion.div>
             );
           })}
