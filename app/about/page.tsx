@@ -67,8 +67,8 @@ const ApertureArchive = () => {
             const start = i / dossier.length;
             const end = (i + 1) / dossier.length;
 
-            const opacity = useTransform(smoothProgress, [start, start + 0.05, end - 0.05, end], [0, 1, 1, 0]);
-            const x = useTransform(smoothProgress, [start, start + 0.05], [50, 0]);
+            const opacity = useTransform(smoothProgress, [start, start + 0.05, end - 0.05, end], [start === 0 ? 1 : 0, 1, 1, 0]);
+            const x = useTransform(smoothProgress, [start, start + 0.05], [start === 0 ? 0 : 50, 0]);
 
             return (
               <motion.div
