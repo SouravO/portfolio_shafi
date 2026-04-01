@@ -47,8 +47,8 @@ const ExpandingGalleryPage = () => {
           </div>
         </header>
 
-        {/* THE EXPANDING WRAPPER - Mobile: Vertical, Desktop: Horizontal */}
-        <div className="flex flex-col md:flex-row w-full gap-1 sm:gap-2 md:gap-4 group" onClick={() => setExpandedIndex(null)}>
+        {/* THE EXPANDING WRAPPER - Mobile: Vertical (expandable), Desktop: Horizontal */}
+        <div className="flex flex-col md:flex-row w-full h-[60vh] md:h-[70vh] gap-1 sm:gap-2 md:gap-4 group" onClick={() => setExpandedIndex(null)}>
           {IMAGES.map((src, i) => (
             <motion.div
               key={i}
@@ -59,29 +59,27 @@ const ExpandingGalleryPage = () => {
                 e.stopPropagation();
                 setExpandedIndex(expandedIndex === i ? null : i);
               }}
-              className={`relative overflow-hidden border border-white/5 cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                expandedIndex === i ? 'flex-[7]' : 'flex-1'
+              className={`flex-1 h-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] relative overflow-hidden border border-white/5 cursor-pointer md:group/item ${
+                expandedIndex === i ? 'md:flex-[7]' : ''
               } ${
-                expandedIndex !== null && expandedIndex !== i ? 'opacity-30 md:opacity-40' : ''
+                expandedIndex === null ? '' : expandedIndex !== i ? 'md:opacity-40' : ''
               } ${
                 expandedIndex === i ? 'rounded-lg' : ''
               }`}
-              style={{
-                minHeight: expandedIndex === i ? '70vh' : '180px',
-                maxHeight: expandedIndex === i ? '70vh' : '200px'
-              }}
             >
-              {/* Image Background */}
+              {/* Image Background - Full color on mobile, grayscale on desktop */}
               <div
-                className="absolute inset-0 bg-center bg-cover transition-all duration-700 group-hover/item:scale-105"
+                className="absolute inset-0 bg-center bg-cover transition-all duration-700 md:grayscale md:group-hover/item:grayscale-0 group-hover/item:scale-105"
                 style={{ backgroundImage: `url('${src}')` }}
               />
 
-              {/* Lighter overlay for better photo visibility on mobile */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-50 group-hover/item:opacity-70 transition-opacity duration-500" />
+              {/* Overlay Gradient - Lighter on mobile for better visibility */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-50 md:opacity-40 md:group-hover/item:opacity-80 transition-opacity duration-500" />
 
-              {/* Data Overlay */}
-              <div className="absolute inset-0 p-4 sm:p-6 md:p-8 flex flex-col justify-between">
+              {/* Data Overlay - Visible when expanded on mobile, hover on desktop */}
+              <div className={`absolute inset-0 p-4 sm:p-6 md:p-8 flex flex-col justify-between transition-opacity duration-300 ${
+                expandedIndex === i ? 'opacity-100' : 'opacity-0 md:opacity-0 md:group-hover/item:opacity-100'
+              }`}>
                 <div className="flex justify-between items-start">
                   <span className="bg-[#D4AF37] text-black text-[8px] font-black px-2 py-1 uppercase tracking-widest">
                     Secure_Node_0{i + 1}
@@ -95,14 +93,13 @@ const ExpandingGalleryPage = () => {
                       e.stopPropagation();
                       setSelectedImage(src);
                     }}
-                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 backdrop-blur-md border border-white/30 flex items-center justify-center text-white transition-colors shadow-lg"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 backdrop-blur-md border border-white/30 flex items-center justify-center text-white transition-colors shadow-lg md:w-8 md:h-8 md:bg-black/50 md:border-white/20"
                   >
-                    <Maximize2 size={18} className="sm:w-5 sm:h-5" />
+                    <Maximize2 size={18} className="sm:w-5 sm:h-5 md:w-4 md:h-4" />
                   </motion.button>
                 </div>
 
-                {/* Info shown only when expanded on mobile */}
-                <div className={`transition-opacity duration-300 ${expandedIndex === i ? 'opacity-100' : 'opacity-0 md:opacity-0 group-hover/item:opacity-100'}`}>
+                <div className="pointer-events-none">
                   <p className="text-[8px] sm:text-[10px] font-mono text-[#D4AF37] mb-1 sm:mb-2 uppercase tracking-[0.2em] sm:tracking-[0.3em]">Module_Visual_Ref</p>
                   <h3 className="text-lg sm:text-2xl md:text-3xl lg:text-5xl font-black text-white uppercase italic tracking-tighter leading-none">
                     Visual_System_{i + 1}
@@ -110,11 +107,18 @@ const ExpandingGalleryPage = () => {
                 </div>
               </div>
 
-              {/* Image label - shown when collapsed */}
-              <div className={`absolute bottom-6 left-1/2 -translate-x-1/2 transition-opacity duration-300 pointer-events-none ${
+              {/* Image Label - Hidden when expanded on mobile, vertical on desktop */}
+              <div className={`absolute bottom-6 left-1/2 -translate-x-1/2 transition-opacity duration-300 pointer-events-none md:bottom-10 md:rotate-[-90deg] md:origin-center md:group-hover/item:opacity-0 ${
                 expandedIndex === i ? 'opacity-0' : 'opacity-100'
               }`}>
-                <span className="text-xs sm:text-sm font-black text-white/90 whitespace-nowrap tracking-[0.2em] drop-shadow-lg">IMAGE 0{i + 1}</span>
+                <span className="text-xs sm:text-sm font-black text-white/90 md:text-white/20 whitespace-nowrap tracking-[0.2em] sm:tracking-[0.5em] drop-shadow-lg">IMAGE 0{i + 1}</span>
+              </div>
+
+              {/* Tap hint for mobile */}
+              <div className={`md:hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 pointer-events-none ${
+                expandedIndex === null ? 'opacity-100' : 'opacity-0'
+              }`}>
+                <span className="text-[10px] font-mono text-[#D4AF37]/60 uppercase tracking-widest">tap to expand</span>
               </div>
             </motion.div>
           ))}

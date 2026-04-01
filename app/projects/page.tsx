@@ -152,7 +152,8 @@ export default function SlitScanGallery() {
     <div className="bg-black">
       <div className="fixed inset-0 z-50 pointer-events-none opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
 
-      <nav className="fixed top-8 left-8 right-8 flex justify-between z-[100] mix-blend-difference">
+      {/* Decorative header - not a nav, just visual */}
+      <div className="fixed top-8 left-8 right-8 flex justify-between z-[60] mix-blend-difference pointer-events-none">
         <div className="font-black text-white text-xl tracking-tighter">
           PROJECT_LOG
         </div>
@@ -160,7 +161,7 @@ export default function SlitScanGallery() {
           <span>Archive_2026</span>
           <span>Status: Secure</span>
         </div>
-      </nav>
+      </div>
 
       <main className="relative">
         {projects.map((p, i) => (
