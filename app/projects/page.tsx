@@ -157,10 +157,7 @@ export default function SlitScanGallery() {
         <div className="font-black text-white text-xl tracking-tighter">
           PROJECT_LOG
         </div>
-        <div className="hidden md:flex gap-12 text-white/50 font-mono text-[10px] uppercase tracking-[0.3em]">
-          <span>Archive_2026</span>
-          <span>Status: Secure</span>
-        </div>
+       
       </div>
 
       <main className="relative">

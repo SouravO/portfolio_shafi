@@ -5,12 +5,51 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
 
 const dossier = [
-  { id: "01", tag: "INTRODUCTION", title: "VENTURE\nBUILDER", content: "I build ventures that solve real problems faced by entrepreneurs, startups, investors, and governments. My mission is to create an environment where thousands of startups rise, contribute to the economy, help investors achieve success, enable governments to fast-track development, and improve everyday life for citizens.", img: "/Shafi1.jpg" },
-  { id: "02", tag: "CORE_PILLARS", title: "PROBLEM-FIRST\nAPPROACH", content: "Diagnose deeply, design precisely, execute effectively.", img: "/shafi2.heic" },
-  { id: "03", tag: "CORE_PILLARS", title: "PRIVATE ECOSYSTEM\nBUILDING", content: "Independent, impact-driven, and stakeholder-focused.", img: "/shafi4.JPG" },
-  { id: "04", tag: "CORE_PILLARS", title: "CROSS-STAKEHOLDER\nIMPACT", content: "From founders to policymakers.", img: "/shafi3.jpg" },
-  { id: "05", tag: "PERSONAL_BACKGROUND", title: "RURAL ROOTS\nTO GLOBAL IMPACT", content: "Raised in a rural village in Kerala, I started my first venture with no access to practical startup guidance, funding pathways, or the right networks. Speaking with other entrepreneurs, I realised this was not my story alone — it was a systemic gap.", img: "/shafi6.jpg" },
-  { id: "06", tag: "MISSION", title: "SUSTAINABLE\nECOSYSTEM", content: "To build a privately held startup ecosystem where real problems are met with real solutions, and where execution leads to measurable outcomes.", img: "/shafi7.jpg" },
+  {
+    id: "01",
+    tag: "INTRODUCTION",
+    title: "VENTURE\nBUILDER",
+    content:
+      "I build ventures that solve real problems faced by entrepreneurs, startups, investors, and governments. My mission is to create an environment where thousands of startups rise, contribute to the economy, help investors achieve success, enable governments to fast-track development, and improve everyday life for citizens.",
+    img: "/Shafi1.jpg",
+  },
+  {
+    id: "02",
+    tag: "CORE_PILLARS",
+    title: "PROBLEM-FIRST\nAPPROACH",
+    content: "Diagnose deeply, design precisely, execute effectively.",
+    img: "/shafi2.heic",
+  },
+  {
+    id: "03",
+    tag: "CORE_PILLARS",
+    title: "PRIVATE ECOSYSTEM\nBUILDING",
+    content: "Independent, impact-driven, and stakeholder-focused.",
+    img: "/shafi4.JPG",
+  },
+  {
+    id: "04",
+    tag: "CORE_PILLARS",
+    title: "CROSS-STAKEHOLDER\nIMPACT",
+    content: "From founders to policymakers.",
+    img: "/shafi3.jpg",
+  },
+  {
+    id: "05",
+    tag: "PERSONAL_BACKGROUND",
+    title: "RURAL ROOTS\nTO GLOBAL IMPACT",
+    content:
+      "Raised in a rural village in Kerala, I started my first venture with no access to practical startup guidance, funding pathways, or the right networks. Speaking with other entrepreneurs, I realised this was not my story alone — it was a systemic gap.",
+    img: "/shafi6.jpg",
+  },
+  {
+    id: "06",
+    tag: "MISSION",
+    title: "SUSTAINABLE\nECOSYSTEM",
+    content:
+      "To build a privately held startup ecosystem where real problems are met with real solutions, and where execution leads to measurable outcomes.",
+    img: "/shafi7.jpg",
+  },
 ];
 
 const ApertureArchive = () => {
@@ -20,23 +59,33 @@ const ApertureArchive = () => {
     offset: ["start start", "end end"],
   });
 
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 40, damping: 25 });
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 40,
+    damping: 25,
+  });
 
   return (
-    <div ref={containerRef} className="relative h-[600vh] bg-[#080808] text-white font-sans selection:bg-white selection:text-black">
+    <div
+      ref={containerRef}
+      className="relative h-[600vh] bg-[#080808] text-white font-sans selection:bg-white selection:text-black"
+    >
       <div className="sticky top-0 h-screen w-full flex flex-col md:flex-row items-center overflow-hidden px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20">
-        
         {/* LEFT: THE APERTURE (Masked Image) */}
-        <div className="relative w-full md:w-1/2 aspect-square md:aspect-[4/5] lg:aspect-[3/4] overflow-hidden group mb-8 md:mb-0">
+        <div className="relative w-full md:w-1/2 aspect-[4/5] md:aspect-[3/4] lg:aspect-[2/3] overflow-hidden group mb-8 md:mb-0">
           {dossier.map((item, i) => {
             const start = i / dossier.length;
             const end = (i + 1) / dossier.length;
-            
+
             // Image reveal clip-path animation
             const clipPath = useTransform(
               smoothProgress,
               [start - 0.05, start, end - 0.05, end],
-              ["inset(100% 0 0 0)", "inset(0% 0 0 0)", "inset(0% 0 0 0)", "inset(0 0 100% 0)"]
+              [
+                "inset(100% 0 0 0)",
+                "inset(0% 0 0 0)",
+                "inset(0% 0 0 0)",
+                "inset(0 0 100% 0)",
+              ],
             );
 
             return (
@@ -49,11 +98,14 @@ const ApertureArchive = () => {
                   src={item.img}
                   alt={item.title}
                   fill
-                  className="object-cover grayscale brightness-75 contrast-125"
+                  className="object-cover object-top grayscale brightness-75 contrast-125 "
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
                 {/* HUD Overlay for image */}
                 <div className="absolute inset-0 border-[0.5px] border-white/20 m-2 sm:m-4 flex flex-col justify-between p-2 sm:p-4 pointer-events-none">
-                  <span className="text-[8px] sm:text-[10px] font-mono opacity-40">IMG_REF_{item.id}</span>
+                  <span className="text-[8px] sm:text-[10px] font-mono opacity-40">
+                    IMG_REF_{item.id}
+                  </span>
                   <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
                 </div>
               </motion.div>
@@ -67,8 +119,16 @@ const ApertureArchive = () => {
             const start = i / dossier.length;
             const end = (i + 1) / dossier.length;
 
-            const opacity = useTransform(smoothProgress, [start, start + 0.05, end - 0.05, end], [start === 0 ? 1 : 0, 1, 1, 0]);
-            const x = useTransform(smoothProgress, [start, start + 0.05], [start === 0 ? 0 : 50, 0]);
+            const opacity = useTransform(
+              smoothProgress,
+              [start, start + 0.05, end - 0.05, end],
+              [start === 0 ? 1 : 0, 1, 1, 0],
+            );
+            const x = useTransform(
+              smoothProgress,
+              [start, start + 0.05],
+              [start === 0 ? 0 : 50, 0],
+            );
 
             return (
               <motion.div
@@ -82,16 +142,15 @@ const ApertureArchive = () => {
                     {item.tag}
                   </span>
                 </div>
-                
+
                 <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-black tracking-[calc(-0.05em)] leading-[0.85] whitespace-pre-line uppercase">
                   {item.title}
                 </h2>
-                
+
                 <div className="max-w-xs sm:max-w-sm md:max-w-md space-y-3 sm:space-y-4 pt-4 sm:pt-6">
                   <p className="text-xs sm:text-sm font-medium text-zinc-400 leading-relaxed uppercase tracking-wider">
                     {item.content}
                   </p>
-                 
                 </div>
               </motion.div>
             );
@@ -100,7 +159,6 @@ const ApertureArchive = () => {
 
         {/* PERIPHERAL UI (The "Glass" Frame) */}
         <div className="fixed inset-0 border-[0.5rem] sm:border-[1rem] border-[#080808] z-[100] pointer-events-none" />
-       
       </div>
     </div>
   );

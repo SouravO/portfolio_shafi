@@ -113,7 +113,7 @@ export default function Footer() {
             className="lg:col-span-3"
           >
             <span className="text-[10px] font-black text-[#D4AF37] uppercase tracking-[0.5em] block mb-12">
-              Navigation_Archive
+              Navigation
             </span>
             <ul className="space-y-5">
               {NAV_LINKS.map((link) => (

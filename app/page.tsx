@@ -179,7 +179,6 @@ function CoreBeliefsSection() {
             <h3 className="text-xl sm:text-3xl md:text-5xl lg:text-8xl font-light italic leading-[1.05] text-zinc-300">
               "The goal is to create environments where <span className="text-white font-black not-italic underline decoration-[#D4AF37] decoration-4 sm:decoration-8 underline-offset-[10px] sm:underline-offset-[20px]">success becomes repeatable.</span>"
             </h3>
-            <span className="text-[8px] sm:text-[10px] md:text-[12px] font-black text-[#D4AF37] uppercase tracking-[1em] sm:tracking-[1.5em] block animate-pulse">End_of_Foundation_Archive</span>
           </div>
         </motion.div>
       </div>
