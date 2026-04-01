@@ -40,7 +40,7 @@ const CreativeStack = () => {
           <p className="text-[10px] tracking-[0.5em] uppercase opacity-40 mb-8 z-100">Direct Connections</p>
           {[
             { name: 'LinkedIn', url: 'https://www.linkedin.com/in/shafi-shoukath/', color: 'text-blue-400 hover:text-blue-500' },
-            { name: 'Instagram', url: 'https://www.instagram.com/shafishoukath/', color: 'text-pink-400 hover:text-pink-500' },
+            { name: 'Instagram', url: 'https://www.instagram.com/shafishoukath/', color: 'text-[#D4AF37] hover:text-pink-500' },
             { name: 'Facebook', url: 'https://www.facebook.com/', color: 'text-gray-100 hover:text-gray-200' },
             // { name: 'Behance', url: 'https://www.behance.net/shafi', color: 'text-cyan-400' },
           ].map((item, i) => (
