@@ -3,7 +3,12 @@
 import { useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useMotionValueEvent,
+  AnimatePresence,
+} from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
@@ -43,14 +48,10 @@ export default function Navbar() {
         }}
         animate={hidden && !mobileMenuOpen ? "hidden" : "visible"}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed top-0 left-0 w-full z-[100] px-6 py-8 pointer-events-none"
+        className="fixed top-[-20px] left-0 w-full z-[100] px-6 py-8 pointer-events-none"
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between md:justify-center pointer-events-auto">
-
-          {/* --- MOBILE LOGO AREA (Hidden on MD+) --- */}
-          <div className="md:hidden flex items-center gap-2 bg-black/20 backdrop-blur-3xl border border-white/10 p-2 px-4 rounded-full">
-             <span className="font-black text-white text-xs tracking-tighter">S.S</span>
-          </div>
+        <div className="max-w-7xl mx-auto flex items-center justify-end md:justify-center pointer-events-auto">
+         
 
           {/* --- CENTRAL LINKS (Desktop) --- */}
           <div className="hidden md:flex items-center gap-2 bg-black/20 backdrop-blur-3xl border border-white/10 p-1.5 rounded-full">
@@ -77,7 +78,7 @@ export default function Navbar() {
           </div>
 
           {/* --- MOBILE TOGGLE --- */}
-          <button 
+          <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden p-3 bg-black/20 backdrop-blur-3xl border border-white/10 rounded-full text-white"
           >
@@ -95,7 +96,7 @@ export default function Navbar() {
             exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
             className="fixed inset-0 z-[90] bg-black/60 flex items-center justify-center md:hidden"
           >
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}

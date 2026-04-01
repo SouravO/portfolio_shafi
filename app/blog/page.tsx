@@ -93,157 +93,251 @@ export default function HorizontalWowBlog() {
   const [activeTab, setActiveTab] = useState('All');
   const [expandedPost, setExpandedPost] = useState<number | null>(null);
   const targetRef = useRef<HTMLDivElement>(null);
-  
+
   const { scrollYProgress } = useScroll({ target: targetRef });
 
   // Filter Logic
-  const filteredBlogs = useMemo(() => 
+  const filteredBlogs = useMemo(() =>
     activeTab === 'All' ? BLOGS : BLOGS.filter(b => b.cat === activeTab),
   [activeTab]);
 
   // Adjust horizontal width based on number of items filtered
   const xTranslate = activeTab === 'All' ? "-75%" : "-40%";
-  
+
   const x = useTransform(scrollYProgress, [0, 1], ["0%", xTranslate]);
   const bgX = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
-  
+
   const smoothX = useSpring(x, { stiffness: 100, damping: 30 });
   const smoothBgX = useSpring(bgX, { stiffness: 100, damping: 30 });
 
   return (
-    <section ref={targetRef} className="relative h-[350vh] bg-[#080808]">
-      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
-        
-        {/* --- CATEGORY NAV --- */}
-        <div className="absolute top-8 sm:top-12 md:top-16 lg:top-20 xl:top-24 left-4 sm:left-6 md:left-8 lg:left-10 z-50 flex gap-2 sm:gap-4 bg-white/5 backdrop-blur-xl p-1 sm:p-2 rounded-full border border-white/10 overflow-x-auto">
-          {CATEGORIES.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setActiveTab(cat)}
-              className={`px-3 sm:px-4 md:px-6 py-1 sm:py-2 rounded-full text-[10px] sm:text-xs font-bold tracking-widest transition-all whitespace-nowrap ${
-                activeTab === cat ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              {cat.toUpperCase()}
-            </button>
-          ))}
+    <section ref={targetRef} className="relative bg-[#080808]">
+      {/* Mobile Layout - Vertical Scroll */}
+      <div className="lg:hidden min-h-screen pb-20">
+        {/* Category Nav - Mobile */}
+        <div className="sticky top-10 z-50 flex justify-center px-4 py-4">
+          <div className="flex gap-1 bg-white/5 backdrop-blur-xl p-1 rounded-full border border-white/10 overflow-x-auto max-w-[90vw] scrollbar-hide">
+            {CATEGORIES.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveTab(cat)}
+                className={`px-3 py-1.5 rounded-full text-[10px] font-bold tracking-widest transition-all whitespace-nowrap flex-shrink-0 ${
+                  activeTab === cat ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                {cat.toUpperCase()}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Parallax Background Text */}
-        <motion.div 
-          style={{ x: smoothBgX }}
-          className="absolute inset-0 flex items-center whitespace-nowrap z-0 select-none pointer-events-none"
+        {/* Header - Mobile */}
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="px-6 py-8 border-l-2 border-purple-500 ml-6"
         >
-          
+          <h1 className="text-3xl font-black tracking-tighter text-white mb-2 leading-none">
+            {activeTab === 'All' ? 'THE' : activeTab}<br/>
+            <span className="text-purple-500">JOURNAL</span>
+          </h1>
+          <p className="text-gray-500 text-xs font-mono tracking-tighter mt-2">
+            FILTERED BY: {activeTab.toUpperCase()}
+          </p>
         </motion.div>
 
-        {/* Horizontal Content Grid */}
-        <motion.div style={{ x: smoothX }} className="flex gap-8 sm:gap-12 md:gap-16 lg:gap-20 px-4 sm:px-6 md:px-8 lg:px-[10vw] z-10 items-center">
-          
-          <div className="w-[80vw] sm:w-[60vw] md:w-[40vw] lg:w-[30vw] shrink-0">
-            <motion.div 
-               key={activeTab}
-               initial={{ opacity: 0, y: 20 }}
-               animate={{ opacity: 1, y: 0 }}
-               className="border-l-2 border-purple-500 pl-4 sm:pl-6 md:pl-8"
-            >
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter text-white mb-2 sm:mb-4 leading-none">
-                {activeTab === 'All' ? 'THE' : activeTab}<br/>
-                <span className="text-purple-500 font-outline-2">JOURNAL</span>
-              </h1>
-              <p className="text-gray-500 text-xs sm:text-sm font-mono tracking-tighter">
-                FILTERED BY: {activeTab.toUpperCase()}
-              </p>
-            </motion.div>
+        {/* Blog Cards - Mobile Vertical */}
+        <div className="px-6 space-y-6">
+          <AnimatePresence mode="popLayout">
+            {filteredBlogs.map((post) => (
+              <motion.div
+                key={post.id}
+                layout
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50 }}
+                transition={{ duration: 0.4, ease: "circOut" }}
+                className="relative group w-full h-[400px] overflow-hidden rounded-2xl border border-white/10 bg-[#111]"
+              >
+                <motion.img
+                  whileHover={{ scale: 1.05 }}
+                  src={post.img}
+                  className="w-full h-full object-cover opacity-40 group-hover:opacity-100 group-hover:grayscale-0 grayscale transition-all duration-700"
+                  alt={post.title}
+                />
+
+                <div className="absolute inset-0 p-5 flex flex-col justify-between">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-mono text-purple-400 bg-purple-500/10 px-2 py-1 rounded-full border border-purple-500/20">
+                      {post.cat}
+                    </span>
+                    <button
+                      onClick={() => setExpandedPost(post.id)}
+                      className="p-2 rounded-full bg-black/50 backdrop-blur-md border border-white/10 hover:bg-purple-600 hover:border-purple-500 transition-all"
+                    >
+                      <ExternalLink className="text-white w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div>
+                    <h2 className="text-lg font-bold text-white tracking-tighter mb-2 group-hover:text-purple-300 transition-colors line-clamp-2">
+                      {post.title}
+                    </h2>
+                    <button className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-[0.2em] text-white/50 group-hover:text-white transition-all">
+                      View Case Study <ArrowRight size={8} />
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* Desktop Layout - Horizontal Scroll */}
+      <div className="hidden lg:block relative h-[350vh] bg-[#080808]">
+        <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+
+          {/* --- CATEGORY NAV --- */}
+          <div className="absolute top-8 sm:top-12 md:top-16 lg:top-20 xl:top-24 left-4 sm:left-6 md:left-8 lg:left-10 z-50 flex gap-2 sm:gap-4 bg-white/5 backdrop-blur-xl p-1 sm:p-2 rounded-full border border-white/10 overflow-x-auto max-w-[90vw] scrollbar-hide">
+            {CATEGORIES.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveTab(cat)}
+                className={`px-3 sm:px-4 md:px-6 py-1 sm:py-2 rounded-full text-[10px] sm:text-xs font-bold tracking-widest transition-all whitespace-nowrap ${
+                  activeTab === cat ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                {cat.toUpperCase()}
+              </button>
+            ))}
           </div>
 
-          <div className="flex gap-6 sm:gap-8 md:gap-12 lg:gap-16">
-            <AnimatePresence mode="popLayout">
-              {filteredBlogs.map((post) => (
-                <motion.div 
-                  key={post.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9, x: 50 }}
-                  animate={{ opacity: 1, scale: 1, x: 0 }}
-                  exit={{ opacity: 0, scale: 0.8, x: -50 }}
-                  transition={{ duration: 0.5, ease: "circOut" }}
-                  className="relative group w-[85vw] sm:w-[70vw] md:w-[50vw] lg:w-[35vw] xl:w-[30vw] h-[50vh] sm:h-[55vh] shrink-0"
-                >
-                  <div className="relative w-full h-full overflow-hidden rounded-[1rem] sm:rounded-[2rem] border border-white/10 bg-[#111]">
-                    <motion.img 
-                      whileHover={{ scale: 1.05 }}
-                      src={post.img} 
-                      className="w-full h-full object-cover opacity-40 group-hover:opacity-100 group-hover:grayscale-0 grayscale transition-all duration-700"
-                      alt={post.title}
-                    />
-                    
-                    <div className="absolute inset-0 p-4 sm:p-6 md:p-8 flex flex-col justify-between">
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs sm:text-sm font-mono text-purple-400 bg-purple-500/10 px-2 sm:px-3 py-1 rounded-full border border-purple-500/20">
-                          {post.cat}
-                        </span>
-                        <button 
-                          onClick={() => setExpandedPost(post.id)}
-                          className="p-1 sm:p-2 rounded-full bg-black/50 backdrop-blur-md border border-white/10 hover:bg-purple-600 hover:border-purple-500 transition-all"
-                        >
-                          <ExternalLink className="text-white w-3 h-3 sm:w-4 sm:h-4" />
-                        </button>
-                      </div>
+          {/* Parallax Background Text */}
+          <motion.div
+            style={{ x: smoothBgX }}
+            className="absolute inset-0 flex items-center whitespace-nowrap z-0 select-none pointer-events-none"
+          >
 
-                      <div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tighter mb-1 sm:mb-2 group-hover:text-purple-300 transition-colors">
-                          {post.title}
-                        </h2>
-                        <button className="flex items-center gap-1 sm:gap-2 text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 group-hover:text-white transition-all">
-                          View Case Study <ArrowRight size={10} className="sm:w-3 sm:h-3" />
-                        </button>
+          </motion.div>
+
+          {/* Horizontal Content Grid */}
+          <motion.div style={{ x: smoothX }} className="flex gap-8 sm:gap-12 md:gap-16 lg:gap-20 px-4 sm:px-6 md:px-8 lg:px-[10vw] z-10 items-center">
+
+            <div className="w-[80vw] sm:w-[60vw] md:w-[40vw] lg:w-[30vw] shrink-0">
+              <motion.div
+                 key={activeTab}
+                 initial={{ opacity: 0, y: 20 }}
+                 animate={{ opacity: 1, y: 0 }}
+                 className="border-l-2 border-purple-500 pl-4 sm:pl-6 md:pl-8"
+              >
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter text-white mb-2 sm:mb-4 leading-none">
+                  {activeTab === 'All' ? 'THE' : activeTab}<br/>
+                  <span className="text-purple-500 font-outline-2">JOURNAL</span>
+                </h1>
+                <p className="text-gray-500 text-xs sm:text-sm font-mono tracking-tighter">
+                  FILTERED BY: {activeTab.toUpperCase()}
+                </p>
+              </motion.div>
+            </div>
+
+            <div className="flex gap-6 sm:gap-8 md:gap-12 lg:gap-16">
+              <AnimatePresence mode="popLayout">
+                {filteredBlogs.map((post) => (
+                  <motion.div
+                    key={post.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.9, x: 50 }}
+                    animate={{ opacity: 1, scale: 1, x: 0 }}
+                    exit={{ opacity: 0, scale: 0.8, x: -50 }}
+                    transition={{ duration: 0.5, ease: "circOut" }}
+                    className="relative group w-[85vw] sm:w-[70vw] md:w-[50vw] lg:w-[35vw] xl:w-[30vw] h-[50vh] sm:h-[55vh] shrink-0"
+                  >
+                    <div className="relative w-full h-full overflow-hidden rounded-[1rem] sm:rounded-[2rem] border border-white/10 bg-[#111]">
+                      <motion.img
+                        whileHover={{ scale: 1.05 }}
+                        src={post.img}
+                        className="w-full h-full object-cover opacity-40 group-hover:opacity-100 group-hover:grayscale-0 grayscale transition-all duration-700"
+                        alt={post.title}
+                      />
+
+                      <div className="absolute inset-0 p-4 sm:p-6 md:p-8 flex flex-col justify-between">
+                        <div className="flex justify-between items-center">
+                          <span className="text-xs sm:text-sm font-mono text-purple-400 bg-purple-500/10 px-2 sm:px-3 py-1 rounded-full border border-purple-500/20">
+                            {post.cat}
+                          </span>
+                          <button
+                            onClick={() => setExpandedPost(post.id)}
+                            className="p-1 sm:p-2 rounded-full bg-black/50 backdrop-blur-md border border-white/10 hover:bg-purple-600 hover:border-purple-500 transition-all"
+                          >
+                            <ExternalLink className="text-white w-3 h-3 sm:w-4 sm:h-4" />
+                          </button>
+                        </div>
+
+                        <div>
+                          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tighter mb-1 sm:mb-2 group-hover:text-purple-300 transition-colors">
+                            {post.title}
+                          </h2>
+                          <button className="flex items-center gap-1 sm:gap-2 text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 group-hover:text-white transition-all">
+                            View Case Study <ArrowRight size={10} className="sm:w-3 sm:h-3" />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
 
-          <div className="w-[20vw] shrink-0 flex items-center justify-center hidden lg:flex">
-             <Globe className="w-8 sm:w-12 h-8 sm:h-12 text-white/10" />
-          </div>
+            <div className="w-[20vw] shrink-0 flex items-center justify-center hidden lg:flex">
+               <Globe className="w-8 sm:w-12 h-8 sm:h-12 text-white/10" />
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Progress Bar - Desktop Only */}
+        <motion.div
+          className="fixed bottom-4 sm:bottom-6 md:bottom-8 left-4 sm:left-6 md:left-8 right-4 sm:right-6 md:right-8 h-[1px] bg-white/5 z-50 origin-left"
+          style={{ scaleX: scrollYProgress }}
+        >
+          <div className="absolute right-0 top-[-2px] h-1 w-6 sm:w-8 md:w-10 bg-purple-500 shadow-[0_0_20px_#a855f7]" />
         </motion.div>
       </div>
 
       {/* Expanded Card Modal */}
       <AnimatePresence>
         {expandedPost && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setExpandedPost(null)}
             className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 sm:p-6"
           >
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-4xl w-full bg-[#0a0a0a] border border-purple-500/30 rounded-xl sm:rounded-2xl overflow-hidden"
+              className="relative max-w-4xl w-full bg-[#0a0a0a] border border-purple-500/30 rounded-xl sm:rounded-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
             >
-              <button 
+              <button
                 onClick={() => setExpandedPost(null)}
                 className="absolute top-4 sm:top-6 right-4 sm:right-6 z-10 p-1 sm:p-2 bg-black/50 hover:bg-purple-600 rounded-full transition-all"
               >
                 <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-white rotate-45" />
               </button>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 p-6 sm:p-8 md:p-12">
-                <motion.img 
+                <motion.img
                   src={BLOGS.find(b => b.id === expandedPost)?.img}
                   alt="Expanded"
                   className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg"
                   initial={{ scale: 0.9 }}
                   animate={{ scale: 1 }}
                 />
-                
+
                 <div className="flex flex-col justify-between">
                   <div>
                     <span className="text-purple-400 text-xs sm:text-sm font-mono bg-purple-500/10 px-2 sm:px-3 py-1 rounded-full border border-purple-500/20">
@@ -265,14 +359,6 @@ export default function HorizontalWowBlog() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Progress Bar */}
-      <motion.div 
-        className="fixed bottom-4 sm:bottom-6 md:bottom-8 left-4 sm:left-6 md:left-8 right-4 sm:right-6 md:right-8 h-[1px] bg-white/5 z-50 origin-left"
-        style={{ scaleX: scrollYProgress }}
-      >
-        <div className="absolute right-0 top-[-2px] h-1 w-6 sm:w-8 md:w-10 bg-purple-500 shadow-[0_0_20px_#a855f7]" />
-      </motion.div>
     </section>
   );
 }

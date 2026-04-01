@@ -14,14 +14,15 @@ const IMAGES = [
 
 const ExpandingGalleryPage = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   return (
     <main className="min-h-screen bg-[#050505] text-white selection:bg-[#D4AF37] selection:text-black font-sans">
-      
+
       {/* 1. HEADER HUD */}
-      <nav className="fixed top-0 left-0 w-full z-50 px-10 py-8 flex justify-between items-center mix-blend-difference">
+      <nav className="fixed top-0 left-0 w-full z-50 px-4 sm:px-6 md:px-10 py-6 sm:py-8 flex justify-between items-center mix-blend-difference">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 bg-white text-black flex items-center justify-center font-black text-xl">G.</div>
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white text-black flex items-center justify-center font-black text-lg sm:text-xl">G.</div>
         </div>
         <div className="hidden md:block text-right">
           <span className="text-[8px] font-mono tracking-widest opacity-30 block">LAT: 12.9716° N</span>
@@ -30,50 +31,63 @@ const ExpandingGalleryPage = () => {
       </nav>
 
       {/* 2. MAIN CONTAINER */}
-      <div className="max-w-[1400px] mx-auto pt-32 pb-20 px-6 lg:px-10">
-        
+      <div className="max-w-[1400px] mx-auto pt-24 sm:pt-28 md:pt-32 pb-20 px-4 sm:px-6 lg:px-10">
+
         {/* Title Section */}
-        <header className="mb-16 relative">
-          <motion.h1 
+        <header className="mb-10 sm:mb-14 md:mb-16 relative">
+          <motion.h1
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            className="text-7xl md:text-9xl font-black uppercase italic tracking-tighter leading-none"
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl font-black uppercase italic tracking-tighter leading-none"
           >
             Gallery<span className="text-[#D4AF37]">.</span>
           </motion.h1>
-          <div className="mt-6 flex items-center gap-6">
-            <div className="h-px w-20 bg-[#D4AF37]" />
-            
+          <div className="mt-4 sm:mt-6 flex items-center gap-4 sm:gap-6">
+            <div className="h-px w-16 sm:w-20 bg-[#D4AF37]" />
           </div>
         </header>
 
-        {/* THE EXPANDING WRAPPER */}
-        <div className="flex flex-col md:flex-row w-full h-[70vh] gap-2 md:gap-4 group">
+        {/* THE EXPANDING WRAPPER - Mobile: Vertical, Desktop: Horizontal */}
+        <div className="flex flex-col md:flex-row w-full gap-1 sm:gap-2 md:gap-4 group" onClick={() => setExpandedIndex(null)}>
           {IMAGES.map((src, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="flex-1 hover:flex-[7] h-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] relative overflow-hidden group/item border border-white/5 cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                setExpandedIndex(expandedIndex === i ? null : i);
+              }}
+              className={`relative overflow-hidden border border-white/5 cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                expandedIndex === i ? 'flex-[7]' : 'flex-1'
+              } ${
+                expandedIndex !== null && expandedIndex !== i ? 'opacity-30 md:opacity-40' : ''
+              } ${
+                expandedIndex === i ? 'rounded-lg' : ''
+              }`}
+              style={{
+                minHeight: expandedIndex === i ? '70vh' : '180px',
+                maxHeight: expandedIndex === i ? '70vh' : '200px'
+              }}
             >
               {/* Image Background */}
-              <div 
-                className="absolute inset-0 bg-center bg-cover grayscale transition-all duration-1000 group-hover/item:grayscale-0 group-hover/item:scale-105"
+              <div
+                className="absolute inset-0 bg-center bg-cover transition-all duration-700 group-hover/item:scale-105"
                 style={{ backgroundImage: `url('${src}')` }}
               />
-              
-              {/* Overlay Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-40 group-hover/item:opacity-80 transition-opacity duration-500" />
+
+              {/* Lighter overlay for better photo visibility on mobile */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-50 group-hover/item:opacity-70 transition-opacity duration-500" />
 
               {/* Data Overlay */}
-              <div className="absolute inset-0 p-8 flex flex-col justify-between opacity-0 group-hover/item:opacity-100 transition-opacity duration-500 delay-100">
+              <div className="absolute inset-0 p-4 sm:p-6 md:p-8 flex flex-col justify-between">
                 <div className="flex justify-between items-start">
                   <span className="bg-[#D4AF37] text-black text-[8px] font-black px-2 py-1 uppercase tracking-widest">
                     Secure_Node_0{i + 1}
                   </span>
-                  
-                  {/* FULL SCREEN BUTTON */}
+
+                  {/* FULL SCREEN BUTTON - Larger on mobile */}
                   <motion.button
                     whileHover={{ scale: 1.1, backgroundColor: "#D4AF37", color: "#000" }}
                     whileTap={{ scale: 0.9 }}
@@ -81,41 +95,34 @@ const ExpandingGalleryPage = () => {
                       e.stopPropagation();
                       setSelectedImage(src);
                     }}
-                    className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition-colors"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 backdrop-blur-md border border-white/30 flex items-center justify-center text-white transition-colors shadow-lg"
                   >
-                    <Maximize2 size={16} />
+                    <Maximize2 size={18} className="sm:w-5 sm:h-5" />
                   </motion.button>
                 </div>
-                
-                <div className="pointer-events-none">
-                  <p className="text-[10px] font-mono text-[#D4AF37] mb-2 uppercase tracking-[0.3em]">Module_Visual_Ref</p>
-                  <h3 className="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter leading-none">
+
+                {/* Info shown only when expanded on mobile */}
+                <div className={`transition-opacity duration-300 ${expandedIndex === i ? 'opacity-100' : 'opacity-0 md:opacity-0 group-hover/item:opacity-100'}`}>
+                  <p className="text-[8px] sm:text-[10px] font-mono text-[#D4AF37] mb-1 sm:mb-2 uppercase tracking-[0.2em] sm:tracking-[0.3em]">Module_Visual_Ref</p>
+                  <h3 className="text-lg sm:text-2xl md:text-3xl lg:text-5xl font-black text-white uppercase italic tracking-tighter leading-none">
                     Visual_System_{i + 1}
                   </h3>
                 </div>
               </div>
 
-              {/* Vertical ID (Visible when collapsed) */}
-              <div className="absolute bottom-10 left-1/2 -translate-x-1/2 md:rotate-[-90deg] group-hover/item:opacity-0 transition-opacity duration-300 pointer-events-none">
-                <span className="text-xs font-black text-white/20 whitespace-nowrap tracking-[0.5em]">REF_0{i + 1}</span>
+              {/* Image label - shown when collapsed */}
+              <div className={`absolute bottom-6 left-1/2 -translate-x-1/2 transition-opacity duration-300 pointer-events-none ${
+                expandedIndex === i ? 'opacity-0' : 'opacity-100'
+              }`}>
+                <span className="text-xs sm:text-sm font-black text-white/90 whitespace-nowrap tracking-[0.2em] drop-shadow-lg">IMAGE 0{i + 1}</span>
               </div>
             </motion.div>
           ))}
         </div>
 
         {/* Additional Technical Footer */}
-        <footer className="mt-20 flex flex-col md:flex-row justify-between items-end gap-10">
+        <footer className="mt-12 sm:mt-16 md:mt-20 flex flex-col md:flex-row justify-between items-end gap-8 sm:gap-10">
           <div className="max-w-md">
-            
-          </div>
-          <div className="flex gap-10 items-center">
-            <div className="text-right">
-              <span className="text-[#D4AF37] font-black text-4xl italic block leading-none tracking-tighter">BEYOND</span>
-              <span className="text-white font-thin text-4xl block leading-none tracking-tighter uppercase">LOGIC.</span>
-            </div>
-            <button className="h-20 w-20 rounded-full border border-white/20 flex items-center justify-center group hover:bg-white transition-all duration-500">
-              <span className="text-white group-hover:text-black transition-colors">→</span>
-            </button>
           </div>
         </footer>
       </div>

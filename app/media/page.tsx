@@ -33,7 +33,7 @@ const CreativeStack = () => {
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
         
         {/* PHASE 1: SOCIAL LINKS (The Background Layer) */}
-        <motion.div 
+        <motion.div
           style={{ opacity: socialOpacity, scale: socialScale }}
           className="absolute inset-0 flex flex-col items-center justify-center space-y-4 px-6"
         >
@@ -60,7 +60,7 @@ const CreativeStack = () => {
         </motion.div>
 
         {/* PHASE 2: CONTACT FORM (The Sliding Sheet) */}
-        <motion.div 
+        <motion.div
           style={{ y: formY, rotate: formRotation }}
           className="absolute inset-0 bg-white text-black p-12 flex flex-col justify-center items-center shadow-[0_-50px_100px_rgba(0,0,0,0.5)]"
         >
