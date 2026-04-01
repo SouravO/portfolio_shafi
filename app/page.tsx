@@ -132,10 +132,11 @@ function CoreBeliefsSection() {
         <motion.div
           style={{
             rotate: useTransform(smoothProgress, [0, 1], [0, 45]),
-            opacity: useTransform(smoothProgress, [0, 0.2, 0.8, 1], [0, 0.08, 0.08, 0])
+            opacity: useTransform(smoothProgress, [0, 0.2, 0.8, 1], [0, 0.08, 0.08, 0]),
+            backgroundImage: 'linear-gradient(#D4AF37 1px, transparent 1px), linear-gradient(90deg, #D4AF37 1px, transparent 1px)',
+            backgroundSize: '100px 100px'
           }}
           className="absolute inset-0 pointer-events-none"
-          style={{ backgroundImage: 'linear-gradient(#D4AF37 1px, transparent 1px), linear-gradient(90deg, #D4AF37 1px, transparent 1px)', backgroundSize: '100px 100px' }}
         />
 
         <div className="relative z-10 w-full max-w-7xl px-6 sm:px-8 md:px-10">
